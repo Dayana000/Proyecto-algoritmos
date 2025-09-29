@@ -1,12 +1,12 @@
-# 📊 EXPLICACIÓN DEL PROYECTO: ANÁLISIS DE ALGORITMOS DE ORDENAMIENTO
+#  EXPLICACIÓN DEL PROYECTO: ANÁLISIS DE ALGORITMOS DE ORDENAMIENTO
 
-## 🎯 **OBJETIVO DEL PROYECTO**
+##  **OBJETIVO DEL PROYECTO**
 
 Este proyecto implementa y compara **12 algoritmos de ordenamiento diferentes** para analizar su rendimiento en términos de tiempo de ejecución, utilizando datos reales de productos académicos (artículos, papers, etc.) extraídos de archivos BibTeX.
 
 ---
 
-## 📋 **FUNCIONALIDADES PRINCIPALES**
+##  **FUNCIONALIDADES PRINCIPALES**
 
 ### 1. **Análisis de Rendimiento de Algoritmos**
 - Compara 12 algoritmos de ordenamiento diferentes
@@ -50,7 +50,7 @@ Este proyecto implementa y compara **12 algoritmos de ordenamiento diferentes** 
 
 ---
 
-## 📊 **ESTRUCTURA DEL CÓDIGO**
+##  **ESTRUCTURA DEL CÓDIGO**
 
 ### **Sección 1: Configuración e Imports**
 ```python
@@ -83,36 +83,36 @@ file_name = "Data/unificados.bib"
 
 ---
 
-## 🚀 **CÓMO FUNCIONA EL PROGRAMA**
+##  **CÓMO FUNCIONA EL PROGRAMA**
 
 ### **Paso 1: Carga de Datos**
 ```
-📚 Carga archivo BibTeX → Extrae artículos → Procesa campos
+Carga archivo BibTeX → Extrae artículos → Procesa campos
 ```
 
 ### **Paso 2: Configuración de Algoritmos**
 ```
-🔧 Define métodos numéricos → Define métodos generales → Prepara ejecución
+ Define métodos numéricos → Define métodos generales → Prepara ejecución
 ```
 
 ### **Paso 3: Análisis de Rendimiento**
 ```
-⏱️ Ejecuta cada algoritmo → Mide tiempos → Cuenta archivos procesados
+ Ejecuta cada algoritmo → Mide tiempos → Cuenta archivos procesados
 ```
 
 ### **Paso 4: Visualización de Resultados**
 ```
-📊 Genera tablas → Crea gráficos → Muestra estadísticas
+ Genera tablas → Crea gráficos → Muestra estadísticas
 ```
 
 ### **Paso 5: Análisis de Autores**
 ```
-👥 Extrae autores → Cuenta frecuencia → Genera top 15
+ Extrae autores → Cuenta frecuencia → Genera top 15
 ```
 
 ---
 
-## 📈 **SALIDAS GENERADAS**
+##  **SALIDAS GENERADAS**
 
 ### **1. Tabla de Tiempos de Ordenamiento**
 ```
@@ -125,7 +125,7 @@ QuickSort                  year           0.001456
 
 ### **2. Gráfico de Barras (Tiempos Ascendentes)**
 ```
-📊 ALGORITMOS ORDENADOS POR TIEMPO MÁXIMO (ASCENDENTE):
+ ALGORITMOS ORDENADOS POR TIEMPO MÁXIMO (ASCENDENTE):
 ================================================================================
 Posición  Algoritmo                                    Tiempo Máx (s)  Barra Visual
 --------------------------------------------------------------------------------
@@ -152,7 +152,7 @@ Pos.     Autor                                        Apariciones
 
 ---
 
-## 🎓 **APRENDIZAJES DEL PROYECTO**
+##  **APRENDIZAJES DEL PROYECTO**
 
 ### **Conceptos de Algoritmos:**
 - **Complejidad Temporal**: O(n²), O(n log n), O(n)
@@ -174,7 +174,7 @@ Pos.     Autor                                        Apariciones
 
 ---
 
-## 🔍 **RESULTADOS ESPERADOS**
+##  **RESULTADOS ESPERADOS**
 
 ### **Rendimiento de Algoritmos:**
 - **Más Rápidos**: TimSort, QuickSort, HeapSort
@@ -188,7 +188,7 @@ Pos.     Autor                                        Apariciones
 
 ---
 
-## 💡 **VALOR ACADÉMICO**
+##  **VALOR ACADÉMICO**
 
 ### **Para Análisis de Algoritmos:**
 - Comparación práctica de 12 algoritmos
@@ -207,7 +207,7 @@ Pos.     Autor                                        Apariciones
 
 ---
 
-## 🚀 **CÓMO USAR EL PROYECTO**
+##  **CÓMO USAR EL PROYECTO**
 
 ### **Ejecución Básica:**
 ```bash
@@ -225,7 +225,7 @@ pip install matplotlib numpy
 
 ---
 
-## 📊 **MÉTRICAS DE RENDIMIENTO**
+##  **MÉTRICAS DE RENDIMIENTO**
 
 ### **Tiempos Típicos (ejemplo):**
 - **TimSort**: 0.000123 segundos
@@ -243,7 +243,7 @@ pip install matplotlib numpy
 
 ---
 
-## 🎯 **CONCLUSIONES**
+##  **CONCLUSIONES**
 
 Este proyecto demuestra:
 
