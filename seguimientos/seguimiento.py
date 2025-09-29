@@ -1,6 +1,8 @@
 import time
 import os
 import re
+import matplotlib.pyplot as plt
+import numpy as np
 
 """
 Esta clase contiene diferentes métodos de ordenamiento y un método para analizar el tiempo de ejecución de cada uno.
@@ -421,6 +423,104 @@ def display_file_counts(file_counts):
     print(f"{'TOTAL':<35} {total_files:<20}")
     print("="*70)
 
+# Crear diagrama de barras con tiempos de ordenamiento
+def create_sorting_time_chart(results):
+    """
+    Crea un diagrama de barras mostrando los tiempos de ejecución de los algoritmos
+    de ordenamiento ordenados de manera ascendente.
+    """
+    # Recopilar todos los tiempos de todos los métodos y campos
+    all_times = []
+    method_names = []
+    
+    for method, fields in results.items():
+        for field, time_taken in fields.items():
+            all_times.append(time_taken)
+            method_names.append(f"{method} ({field})")
+    
+    # Crear arrays de numpy para ordenamiento
+    times_array = np.array(all_times)
+    names_array = np.array(method_names)
+    
+    # Obtener índices para ordenar de manera ascendente
+    sorted_indices = np.argsort(times_array)
+    
+    # Ordenar los datos
+    sorted_times = times_array[sorted_indices]
+    sorted_names = names_array[sorted_indices]
+    
+    # Mostrar resultados en formato de tabla
+    print(f"\n📊 ALGORITMOS ORDENADOS POR TIEMPO MÁXIMO (ASCENDENTE):")
+    print("="*80)
+    print(f"{'Posición':<8} {'Algoritmo':<45} {'Tiempo Máx (s)':<15} {'Barra Visual':<20}")
+    print("-"*80)
+    
+    # Crear representación visual con caracteres ASCII
+    max_time = max(sorted_times)
+    for i, (name, time_val) in enumerate(zip(sorted_names, sorted_times), 1):
+        # Crear barra visual proporcional
+        bar_length = int((time_val / max_time) * 15) if max_time > 0 else 0
+        bar_visual = "█" * bar_length + "░" * (15 - bar_length)
+        
+        print(f"{i:<8} {name:<45} {time_val:<15.6f} {bar_visual}")
+    
+    # Mostrar estadísticas adicionales
+    print(f"\n📈 ESTADÍSTICAS DE RENDIMIENTO (TIEMPO MÁXIMO POR MÉTODO):")
+    print(f"   • Tiempo más rápido: {min(sorted_times):.6f} segundos")
+    print(f"   • Tiempo más lento: {max(sorted_times):.6f} segundos")
+    print(f"   • Tiempo promedio: {np.mean(sorted_times):.6f} segundos")
+    print(f"   • Diferencia entre el más rápido y el más lento: {max(sorted_times) - min(sorted_times):.6f} segundos")
+    
+    # Mostrar los 3 más rápidos
+    print(f"\n🏆 TOP 3 ALGORITMOS MÁS RÁPIDOS:")
+    for i in range(min(3, len(sorted_times))):
+        print(f"   {i+1}. {sorted_names[i]}: {sorted_times[i]:.6f} segundos")
+    
+    # Mostrar los 3 más lentos
+    print(f"\n🐌 TOP 3 ALGORITMOS MÁS LENTOS:")
+    for i in range(max(0, len(sorted_times)-3), len(sorted_times)):
+        print(f"   {len(sorted_times)-i}. {sorted_names[i]}: {sorted_times[i]:.6f} segundos")
+    
+    # Intentar crear gráfico con matplotlib si está disponible
+    try:
+        import matplotlib.pyplot as plt
+        
+        # Configurar el gráfico
+        plt.figure(figsize=(15, 10))
+        bars = plt.bar(range(len(sorted_times)), sorted_times, 
+                       color=plt.cm.viridis(np.linspace(0, 1, len(sorted_times))))
+        
+        # Personalizar el gráfico
+        plt.title('Tiempos Máximos de Ejecución de Algoritmos de Ordenamiento\n(Ordenados de Menor a Mayor Tiempo)', 
+                  fontsize=16, fontweight='bold', pad=20)
+        plt.xlabel('Algoritmos de Ordenamiento', fontsize=12, fontweight='bold')
+        plt.ylabel('Tiempo de Ejecución (segundos)', fontsize=12, fontweight='bold')
+        
+        # Configurar las etiquetas del eje x
+        plt.xticks(range(len(sorted_names)), sorted_names, rotation=45, ha='right')
+        
+        # Agregar valores en las barras
+        for i, (bar, time_val) in enumerate(zip(bars, sorted_times)):
+            plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(sorted_times)*0.01,
+                    f'{time_val:.6f}s', ha='center', va='bottom', fontsize=8, rotation=90)
+        
+        # Ajustar el layout para evitar que se corten las etiquetas
+        plt.tight_layout()
+        
+        # Agregar grid para mejor legibilidad
+        plt.grid(axis='y', alpha=0.3, linestyle='--')
+        
+        # Mostrar el gráfico
+        plt.show()
+        
+        # También guardar el gráfico como imagen
+        plt.savefig('tiempos_ordenamiento.png', dpi=300, bbox_inches='tight')
+        print(f"\n📊 Gráfico guardado como 'tiempos_ordenamiento.png'")
+        
+    except ImportError:
+        print(f"\n⚠️  Matplotlib no está disponible. Se muestra solo la representación en texto.")
+        print(f"💡 Para instalar matplotlib: pip install matplotlib")
+
 
 # ----------------------------------------------CHATGPT------------------------------------------#
 
@@ -457,3 +557,9 @@ if __name__ == "__main__":
     total_times, file_counts = analyze_sorting_total_time(articles, numeric_methods, general_methods)
     display_results(total_times)
     display_file_counts(file_counts)
+    
+    # Crear y mostrar el diagrama de barras
+    print("\n" + "="*70)
+    print("GENERANDO DIAGRAMA DE BARRAS DE TIEMPOS DE ORDENAMIENTO")
+    print("="*70)
+    create_sorting_time_chart(total_times)
