@@ -1,29 +1,95 @@
-import time
-import os
-import re
-import matplotlib.pyplot as plt
-import numpy as np
+# =============================================================================
+# IMPORTS Y CONFIGURACIÓN INICIAL
+# =============================================================================
+
+# Importaciones estándar de Python
+import time    # Para medir tiempos de ejecución
+import os      # Para operaciones del sistema de archivos
+import re      # Para expresiones regulares (limpieza de datos)
+
+# Importaciones para visualización y análisis de datos
+import matplotlib.pyplot as plt  # Para crear gráficos
+import numpy as np               # Para operaciones numéricas y arrays
 
 """
-Esta clase contiene diferentes métodos de ordenamiento y un método para analizar el tiempo de ejecución de cada uno.
-Los métodos de ordenamiento incluyen: CombSort, SelectionSort, TreeSort, BitonicSort, Pigeonhole Sort, Bucket Sort, Quick Sort, Heap Sort, Gnome Sort y Binary Insertion Sort.
-Los métodos son utilizados para ordenar datos extraídos de un archivo BibTeX.
-El archivo BibTeX es leído y analizado para extraer los campos relevantes, incluyendo el año, título, autor y revista.
-Este fue requerido para el seguimiento 1 de la asignatura de Análisis de Algoritmos.
+PROYECTO: ANÁLISIS DE ALGORITMOS DE ORDENAMIENTO
+================================================
+
+Este proyecto implementa y compara 12 algoritmos de ordenamiento diferentes:
+- Métodos numéricos especializados: Pigeonhole Sort, Radix Sort, Bucket Sort, Bitonic Sort
+- Métodos generales: TimSort, Comb Sort, Selection Sort, Tree Sort, QuickSort, HeapSort, Gnome Sort, Binary Insertion Sort
+
+FUNCIONALIDADES PRINCIPALES:
+1. Análisis de rendimiento de algoritmos de ordenamiento
+2. Visualización de tiempos de ejecución
+3. Análisis de autores más frecuentes en productos académicos
+4. Generación de gráficos y reportes
+
+DATOS DE ENTRADA:
+- Archivo BibTeX con productos académicos (artículos, papers, etc.)
+- Campos analizados: título, autor, año, revista
+
+AUTOR: Proyecto para seguimiento 1 - Análisis de Algoritmos
 """
 
-# Se define la ruta del archivo BibTeX a partir del directorio actual del script
+# =============================================================================
+# CONFIGURACIÓN DE ARCHIVOS
+# =============================================================================
+
+# Ruta del archivo BibTeX principal que contiene los datos a analizar
 file_name = r"C:\Users\USUARIO\Desktop\algoritmos\al3\Proyecto-algoritmos\Data\unificados.bib"
-# ----------------------------------------------
-# Funciones de diferentes métodos de ordenamiento
-# ----------------------------------------------
+# =============================================================================
+# ALGORITMOS DE ORDENAMIENTO
+# =============================================================================
 
-# ----------------------------------------------
-# USO DE CHATGPT PARA LA IMPLEMENTACION DE LOS ALGORITMOS
-# ----------------------------------------------
+"""
+IMPLEMENTACIÓN DE 12 ALGORITMOS DE ORDENAMIENTO
+===============================================
 
-# CombSort: Método de ordenamiento que utiliza un "gap" decreciente para comparar y ordenar elementos.
+Esta sección contiene la implementación de diferentes algoritmos de ordenamiento
+para comparar su rendimiento en términos de tiempo de ejecución.
+
+ALGORITMOS IMPLEMENTADOS:
+1. Comb Sort - Algoritmo de burbuja mejorado con gap decreciente
+2. Selection Sort - Selecciona el menor elemento en cada iteración
+3. Tree Sort - Utiliza un árbol binario de búsqueda
+4. Bitonic Sort - Algoritmo especializado para secuencias bitónicas
+5. Pigeonhole Sort - Eficiente para rangos pequeños de valores
+6. Bucket Sort - Distribuye elementos en cubetas
+7. Quick Sort - Algoritmo divide y conquista con pivote
+8. Heap Sort - Utiliza la estructura de datos heap
+9. Gnome Sort - Algoritmo simple de intercambio
+10. Binary Insertion Sort - Inserción con búsqueda binaria
+11. Radix Sort - Ordena por dígitos (implementado)
+12. TimSort - Algoritmo híbrido de Python (built-in)
+
+NOTA: Algunas implementaciones fueron desarrolladas con asistencia de ChatGPT
+para asegurar corrección y eficiencia.
+"""
+
+# =============================================================================
+# ALGORITMOS DE ORDENAMIENTO - IMPLEMENTACIONES
+# =============================================================================
+
 def comb_sort(data):
+    """
+    COMB SORT - Algoritmo de ordenamiento con gap decreciente
+    
+    DESCRIPCIÓN:
+    - Mejora del algoritmo de burbuja
+    - Utiliza un "gap" que se reduce en cada iteración
+    - Factor de reducción típico: 1.3
+    - Complejidad: O(n²) en el peor caso, O(n log n) en promedio
+    
+    PARÁMETROS:
+    - data: Lista a ordenar (se modifica in-place)
+    
+    ALGORITMO:
+    1. Inicializar gap = tamaño del array
+    2. Reducir gap por factor de contracción
+    3. Comparar elementos separados por el gap
+    4. Repetir hasta que gap = 1 y no haya intercambios
+    """
     n = len(data) #tamaño del arreglo
     gap = n # Inicializa el valor de gap (separación) al tamaño del arreglo.
     shrink = 1.3  # Factor de reducción del gap
@@ -41,8 +107,24 @@ def comb_sort(data):
                 sorted = False
             i += 1
 
-# SelectionSort: Selecciona el menor elemento y lo coloca al inicio.
 def selection_sort(data):
+    """
+    SELECTION SORT - Algoritmo de ordenamiento por selección
+    
+    DESCRIPCIÓN:
+    - Encuentra el elemento más pequeño en cada iteración
+    - Lo coloca en la posición correcta
+    - Complejidad: O(n²) en todos los casos
+    - Estable: No cambia el orden relativo de elementos iguales
+    
+    PARÁMETROS:
+    - data: Lista a ordenar (se modifica in-place)
+    
+    ALGORITMO:
+    1. Para cada posición i desde 0 hasta n-1
+    2. Encuentra el elemento más pequeño desde i hasta n-1
+    3. Intercambia el elemento más pequeño con el de la posición i
+    """
     for i in range(len(data)):
         min_idx = i  # Índice del elemento más pequeño
         for j in range(i + 1, len(data)):
@@ -298,10 +380,41 @@ def radix_sort(data):
         exp *= RADIX
     
 
-# ----------------------------------------------
-# Leer archivo BibTeX CHATGPT
-# ----------------------------------------------
+# =============================================================================
+# LECTURA Y PROCESAMIENTO DE DATOS BIBTEX
+# =============================================================================
+
 def read_bibtex(file_name):
+    """
+    LECTURA DE ARCHIVO BIBTEX
+    =========================
+    
+    DESCRIPCIÓN:
+    - Lee y parsea un archivo BibTeX
+    - Extrae información de artículos académicos
+    - Maneja diferentes formatos de campos
+    
+    PARÁMETROS:
+    - file_name: Ruta del archivo BibTeX
+    
+    RETORNA:
+    - Lista de diccionarios, cada uno representa un artículo con sus campos
+    
+    CAMPOS EXTRAÍDOS:
+    - title: Título del artículo
+    - author: Autor(es) del artículo
+    - year: Año de publicación
+    - journal: Revista o conferencia
+    - Otros campos según disponibilidad
+    
+    FORMATO ESPERADO:
+    @article{key,
+        title = {Título del artículo},
+        author = {Autor1 and Autor2},
+        year = {2023},
+        journal = {Nombre de la revista}
+    }
+    """
     data = []
     with open(file_name, "r", encoding="utf-8") as file:
         article = {}
@@ -321,10 +434,37 @@ def read_bibtex(file_name):
                     article[key] = value
     return data
 
-# ----------------------------------------------
-# Calcular tiempos para diferentes métodos
-# ----------------------------------------------
+# =============================================================================
+# ANÁLISIS DE RENDIMIENTO Y MEDICIÓN DE TIEMPOS
+# =============================================================================
+
 def analyze_sorting_total_time(articles, numeric_methods, general_methods):
+    """
+    ANÁLISIS COMPLETO DE RENDIMIENTO DE ALGORITMOS DE ORDENAMIENTO
+    =============================================================
+    
+    DESCRIPCIÓN:
+    - Ejecuta múltiples algoritmos de ordenamiento sobre diferentes campos de datos
+    - Mide tiempos de ejecución para cada combinación algoritmo-campo
+    - Maneja métodos especializados para datos numéricos y métodos generales
+    - Cuenta archivos procesados por cada método
+    
+    PARÁMETROS:
+    - articles: Lista de artículos extraídos del archivo BibTeX
+    - numeric_methods: Diccionario de métodos especializados para datos numéricos
+    - general_methods: Diccionario de métodos generales de ordenamiento
+    
+    RETORNA:
+    - results: Diccionario con tiempos de ejecución por método y campo
+    - file_counts: Diccionario con conteo de archivos procesados por método
+    
+    PROCESO:
+    1. Extrae datos numéricos del campo 'year' para métodos especializados
+    2. Procesa campos generales (title, author, year, journal) para métodos generales
+    3. Ejecuta cada algoritmo y mide tiempo de ejecución
+    4. Maneja errores y continúa con el siguiente algoritmo si uno falla
+    5. Cuenta archivos procesados para estadísticas
+    """
     results = {}
     file_counts = {}  # Contador de archivos revisados por método
 
@@ -396,8 +536,30 @@ def analyze_sorting_total_time(articles, numeric_methods, general_methods):
 
     return results, file_counts
 
-# Mostrar resultados en formato tabular
+# =============================================================================
+# VISUALIZACIÓN Y REPORTES
+# =============================================================================
+
 def display_results(results):
+    """
+    MOSTRAR RESULTADOS EN FORMATO TABULAR
+    ====================================
+    
+    DESCRIPCIÓN:
+    - Muestra los tiempos de ejecución en formato de tabla
+    - Organiza resultados por método y campo
+    - Formato legible para análisis de rendimiento
+    
+    PARÁMETROS:
+    - results: Diccionario con tiempos de ejecución por método y campo
+    
+    FORMATO DE SALIDA:
+    Método                    Campo           Tiempo (s)    
+    ------------------------------------------------------------
+    TimSort (Python built-in) title          0.001234      
+    TimSort (Python built-in) author         0.001456      
+    ...
+    """
     print(f"{'Método':<25} {'Campo':<15} {'Tiempo (s)':<15}")
     print("-" * 60)
     for method, fields in results.items():
@@ -524,42 +686,245 @@ def create_sorting_time_chart(results):
 
 # ----------------------------------------------CHATGPT------------------------------------------#
 
-# ----------------------------------------------
-# Main: Punto de entrada del programa
-# ----------------------------------------------
+# =============================================================================
+# ANÁLISIS DE AUTORES Y FRECUENCIA
+# =============================================================================
+
+def extract_authors(articles):
+    """
+    EXTRACCIÓN Y NORMALIZACIÓN DE AUTORES
+    ====================================
+    
+    DESCRIPCIÓN:
+    - Extrae todos los autores de los artículos académicos
+    - Normaliza nombres (minúsculas, sin espacios extra)
+    - Maneja diferentes formatos de separación de autores
+    - Soporta formatos BibTeX estándar
+    
+    PARÁMETROS:
+    - articles: Lista de artículos con información de autores
+    
+    RETORNA:
+    - Lista de nombres de autores normalizados
+    
+    FORMATOS SOPORTADOS:
+    - "Autor1 and Autor2 and Autor3" (formato BibTeX estándar)
+    - "Autor1; Autor2; Autor3" (formato con punto y coma)
+    - "Autor1, Autor2, Autor3" (formato con comas)
+    
+    NORMALIZACIÓN:
+    - Convierte a minúsculas
+    - Elimina espacios extra
+    - Maneja caracteres especiales
+    """
+    """
+    Extrae y normaliza autores desde la lista de artículos.
+    Soporta formatos con separadores 'and' o comas.
+    Devuelve una lista con todos los autores (normalizados en minúsculas y sin espacios extra).
+    """
+    authors = []
+    for article in articles:
+        raw = article.get("author", "")
+        if not raw:
+            continue
+        text = str(raw).strip()
+        # Separar por ' and ' típico de BibTeX o por comas si aplica
+        if " and " in text.lower():
+            parts = re.split(r"\s+and\s+", text, flags=re.IGNORECASE)
+        else:
+            # fallback: dividir por comas si no hay 'and'
+            parts = [p.strip() for p in text.split(";")] if ";" in text else [p.strip() for p in text.split(",")]
+        for p in parts:
+            name = re.sub(r"\s+", " ", p).strip()
+            if not name:
+                continue
+            authors.append(name.lower())
+    return authors
+
+
+def count_top_authors(authors, top_n=15):
+    """
+    Cuenta apariciones de autores, obtiene los top_n por mayor frecuencia,
+    y luego ordena esos top_n de forma ascendente por número de apariciones.
+    Devuelve lista de tuplas (autor, conteo).
+    """
+    from collections import Counter
+    counts = Counter(authors)
+    if not counts:
+        return []
+    # Seleccionar top N por mayor frecuencia
+    top_desc = counts.most_common()
+    top_desc = top_desc[:top_n]
+    # Ordenar ascendentemente por conteo y por nombre para estabilidad
+    top_asc = sorted(top_desc, key=lambda x: (x[1], x[0]))
+    return top_asc
+
+
+def display_top_authors(top_authors):
+    """
+    Muestra una tabla con autores y cantidad de apariciones, orden ascendente.
+    """
+    print("\n" + "="*70)
+    print("TOP 15 AUTORES CON MÁS APARICIONES (ORDEN ASCENDENTE)")
+    print("="*70)
+    print(f"{'Pos.':<6} {'Autor':<45} {'Apariciones':<12}")
+    print("-" * 70)
+    for i, (author, count) in enumerate(top_authors, start=1):
+        print(f"{i:<6} {author:<45} {count:<12}")
+    print("-" * 70)
+    total = sum(c for _, c in top_authors)
+    print(f"{'TOTAL LISTADO':<51} {total:<12}")
+    print("="*70)
+
+
+def plot_top_authors(top_authors):
+    """
+    Grafica el TOP 15 de autores en orden ascendente de apariciones.
+    Si matplotlib no está disponible, muestra una gráfica ASCII en consola.
+    """
+    # Preparar datos en orden ascendente
+    authors = [a for a, _ in top_authors]
+    counts = [c for _, c in top_authors]
+
+    # Fallback ASCII si no hay matplotlib
+    try:
+        import matplotlib.pyplot as plt
+        import numpy as np
+
+        # Crear figura horizontal para mejor lectura de nombres
+        plt.figure(figsize=(12, 8))
+        y_pos = np.arange(len(authors))
+        plt.barh(y_pos, counts, color=plt.cm.Blues(np.linspace(0.3, 0.9, len(counts))))
+        plt.yticks(y_pos, authors)
+        plt.xlabel('Apariciones', fontsize=12, fontweight='bold')
+        plt.title('TOP 15 AUTORES CON MÁS APARICIONES (ORDEN ASCENDENTE)', fontsize=14, fontweight='bold')
+        plt.grid(axis='x', alpha=0.3, linestyle='--')
+        plt.tight_layout()
+        plt.show()
+        plt.savefig('top15_autores.png', dpi=300, bbox_inches='tight')
+        print("\n📊 Gráfico de autores guardado como 'top15_autores.png'")
+    except Exception:
+        print("\n⚠️  Matplotlib no está disponible. Gráfica ASCII:")
+        max_count = max(counts) if counts else 0
+        for author, count in zip(authors, counts):
+            bar_len = int((count / max_count) * 30) if max_count > 0 else 0
+            bar = '█' * bar_len
+            print(f"{author:<45} | {bar} {count}")
+
+# =============================================================================
+# FUNCIÓN PRINCIPAL Y FLUJO DE EJECUCIÓN
+# =============================================================================
+
 if __name__ == "__main__":
+    """
+    PUNTO DE ENTRADA PRINCIPAL DEL PROGRAMA
+    =======================================
+    
+    FLUJO DE EJECUCIÓN:
+    1. Carga y procesa archivo BibTeX
+    2. Define algoritmos de ordenamiento (numéricos y generales)
+    3. Ejecuta análisis de rendimiento
+    4. Muestra resultados tabulares
+    5. Genera visualizaciones de tiempos
+    6. Analiza autores más frecuentes
+    7. Crea gráficos de autores
+    
+    SALIDAS GENERADAS:
+    - Tablas de rendimiento de algoritmos
+    - Gráficos de tiempos de ordenamiento
+    - Análisis de autores más frecuentes
+    - Archivos PNG con visualizaciones
+    - Estadísticas detalladas de rendimiento
+    """
+    # =========================================================================
+    # INICIALIZACIÓN Y CONFIGURACIÓN
+    # =========================================================================
+    
+    # Cargar datos desde archivo BibTeX
     articles = read_bibtex(file_name)  # Leer archivo BibTeX
     n = len(articles)
+    print(f"📚 Artículos cargados: {n}")
 
-    # Métodos especializados para datos numéricos
+    # =========================================================================
+    # CONFIGURACIÓN DE ALGORITMOS DE ORDENAMIENTO
+    # =========================================================================
+    
+    # Métodos especializados para datos numéricos (años de publicación)
+    # Estos algoritmos son eficientes para rangos pequeños de valores enteros
     numeric_methods = {
-        "Pigeonhole Sort": pigeonhole_sort,
-        "RadixSort": radix_sort,
-        "Bucket Sort": bucket_sort,
-        "Bitonic Sort": bitonic_sort,
+        "Pigeonhole Sort": pigeonhole_sort,    # Eficiente para rangos pequeños
+        "RadixSort": radix_sort,               # Ordena por dígitos
+        "Bucket Sort": bucket_sort,            # Distribuye en cubetas
+        "Bitonic Sort": bitonic_sort,          # Para secuencias bitónicas
     }
 
-    # Métodos generales de ordenamiento
+    # Métodos generales de ordenamiento (para cualquier tipo de datos)
+    # Incluye algoritmos clásicos y el built-in de Python
     general_methods = {
-        "TimSort (Python built-in)": sorted,
-        "Comb Sort": comb_sort,
-        "Selection Sort": selection_sort,
-        "Tree Sort": lambda data: tree_sort(data),
-        "QuickSort": lambda data: quick_sort(data),
-        "HeapSort": heap_sort,
-        "Gnome Sort": gnome_sort,
-        "Binary Insertion Sort": binary_insertion_sort,
+        "TimSort (Python built-in)": sorted,              # Algoritmo híbrido de Python
+        "Comb Sort": comb_sort,                            # Burbuja mejorado
+        "Selection Sort": selection_sort,                  # Selección directa
+        "Tree Sort": lambda data: tree_sort(data),         # Árbol binario
+        "QuickSort": lambda data: quick_sort(data),        # Divide y conquista
+        "HeapSort": heap_sort,                             # Estructura heap
+        "Gnome Sort": gnome_sort,                          # Intercambio simple
+        "Binary Insertion Sort": binary_insertion_sort,    # Inserción con búsqueda binaria
     }
 
+    # =========================================================================
+    # ANÁLISIS DE RENDIMIENTO DE ALGORITMOS DE ORDENAMIENTO
+    # =========================================================================
+    
     print(f"Tamaño de los datos: {n}")
     print("Resultados de ordenamiento:")
     print("-----------------------------------")
+    
+    # Ejecutar análisis completo de rendimiento
+    # Mide tiempos de ejecución para cada algoritmo en diferentes campos
     total_times, file_counts = analyze_sorting_total_time(articles, numeric_methods, general_methods)
+    
+    # Mostrar resultados en formato tabular
     display_results(total_times)
+    
+    # Mostrar estadísticas de archivos procesados
     display_file_counts(file_counts)
     
-    # Crear y mostrar el diagrama de barras
+    # =========================================================================
+    # VISUALIZACIÓN DE TIEMPOS DE ORDENAMIENTO
+    # =========================================================================
+    
+    # Crear y mostrar el diagrama de barras con tiempos ordenados ascendentemente
     print("\n" + "="*70)
     print("GENERANDO DIAGRAMA DE BARRAS DE TIEMPOS DE ORDENAMIENTO")
     print("="*70)
     create_sorting_time_chart(total_times)
+
+    # =========================================================================
+    # ANÁLISIS DE AUTORES MÁS FRECUENTES
+    # =========================================================================
+    
+    print("\n" + "="*70)
+    print("PROCESANDO TOP 15 AUTORES POR APARICIONES")
+    print("="*70)
+    
+    # Extraer y normalizar todos los autores de los artículos
+    all_authors = extract_authors(articles)
+    
+    # Obtener los 15 autores con más apariciones, ordenados ascendentemente
+    top15_authors = count_top_authors(all_authors, top_n=15)
+    
+    if not top15_authors:
+        print("No se encontraron autores válidos en los productos académicos.")
+    else:
+        # Mostrar tabla de autores más frecuentes
+        display_top_authors(top15_authors)
+        
+        # =====================================================================
+        # VISUALIZACIÓN DE AUTORES MÁS FRECUENTES
+        # =====================================================================
+        
+        # Crear gráfico de barras para los autores más frecuentes
+        print("\n" + "="*70)
+        print("GENERANDO GRÁFICA: TOP 15 AUTORES (ORDEN ASCENDENTE)")
+        print("="*70)
+        plot_top_authors(top15_authors)
