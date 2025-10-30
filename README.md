@@ -23,7 +23,7 @@ Este proyecto permite descargar artículos académicos de tres bases de datos pr
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone <url-del-repositorio>
+   git clone https://github.com/Dayana000/Proyecto-algoritmos.git
    cd Proyecto-algoritmos
    ```
 
@@ -211,7 +211,9 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 
 ## 👥 Autores
 
-- **Proyecto Algoritmos** - Universidad del Quindío
+- Anderson Neil Peña
+- Dayana Buitrago
+- David Clavijo
 
 ## 🙏 Agradecimientos
 
