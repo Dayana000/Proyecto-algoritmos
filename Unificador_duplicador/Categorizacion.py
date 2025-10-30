@@ -85,7 +85,7 @@ def save_bibtex(filename, articles):
                 year = article.get("year", "Unknown Year")
                 journal = article.get("journal", "Unknown Journal")
                 tipo = article.get("tipo", "Unknown Type")
-                publisher = article.get("publisher", "Unkown Publisher")
+                publisher = article.get("publisher", "Unknown Publisher")
                 abstract = article.get("abstract", "Unknown Abstract")
                 url = article.get("url", "Unknown URL")
 
@@ -121,7 +121,7 @@ def save_duplicates(filename, duplicates):
                 year = article.get("year", "Unknown Year")
                 journal = article.get("journal", "Unknown Journal")
                 tipo = article.get("tipo", "Unknown Type")
-                publisher = article.get("publisher", "Unkown Publisher")
+                publisher = article.get("publisher", "Unknown Publisher")
                 abstract = article.get("abstract", "Unknown Abstract")
                 url = article.get("url", "Unknown URL")
 
