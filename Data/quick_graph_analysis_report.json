@@ -1,0 +1,64 @@
+{
+  "timestamp": "2025-10-30T04:58:50.722424",
+  "sample_analysis": true,
+  "citation_graph": {},
+  "cooccurrence_graph": {
+    "statistics": {
+      "nodes": 447,
+      "edges": 18796,
+      "density": 0.18856151122079434,
+      "average_degree": 84.09843400447427,
+      "max_degree": 446,
+      "min_degree": 9
+    },
+    "top_terms": [
+      [
+        "intelligence",
+        446
+      ],
+      [
+        "artificial",
+        446
+      ],
+      [
+        "generative",
+        446
+      ],
+      [
+        "org",
+        444
+      ],
+      [
+        "https",
+        444
+      ],
+      [
+        "doi",
+        444
+      ],
+      [
+        "proceedings",
+        444
+      ],
+      [
+        "conference",
+        420
+      ],
+      [
+        "international",
+        410
+      ],
+      [
+        "education",
+        366
+      ]
+    ],
+    "connected_components": 1
+  },
+  "summary": {
+    "total_articles_analyzed": 0,
+    "citation_relationships": 0,
+    "cooccurrence_relationships": 18796,
+    "unique_terms": 447
+  }
+}
