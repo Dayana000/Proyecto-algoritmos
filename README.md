@@ -190,6 +190,13 @@ El script principal genera un reporte con:
 - **Análisis de centralidad** con gráficos detallados
 - **Reportes visuales** en formato PNG de alta calidad
 
+## 🧾 Declaración de uso de IA
+
+Este proyecto incluye un documento de transparencia sobre el uso de herramientas de Inteligencia Artificial durante su desarrollo. Puedes consultarlo en:
+
+- `docs/AI_Declaration.md`
+
+
 ## 🤝 Contribuciones
 
 1. Fork el proyecto
