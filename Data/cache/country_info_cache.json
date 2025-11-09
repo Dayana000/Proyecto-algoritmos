@@ -1,0 +1,37 @@
+{
+  "ID": {
+    "name": "Indonesia",
+    "lat": -5.0,
+    "lon": 120.0
+  },
+  "MA": {
+    "name": "Marruecos",
+    "lat": 32.0,
+    "lon": -5.0
+  },
+  "CN": {
+    "name": "China",
+    "lat": 35.0,
+    "lon": 105.0
+  },
+  "HK": {
+    "name": "Hong Kong",
+    "lat": 22.267,
+    "lon": 114.188
+  },
+  "NP": {
+    "name": "Nepal",
+    "lat": 28.0,
+    "lon": 84.0
+  },
+  "AO": {
+    "name": "Angola",
+    "lat": -12.5,
+    "lon": 18.5
+  },
+  "IN": {
+    "name": "India",
+    "lat": 20.0,
+    "lon": 77.0
+  }
+}

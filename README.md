@@ -10,6 +10,8 @@ Este proyecto permite descargar artículos académicos de tres bases de datos pr
 - **Análisis de grafos de citaciones** con algoritmos de caminos mínimos
 - **Análisis de grafos de coocurrencia** de términos
 - **Visualización interactiva** de redes y componentes
+- **Dashboards bibliométricos**: mapa geográfico, nube de palabras y línea temporal exportables a PDF
+- **Clustering jerárquico** de abstracts con dendrogramas comparativos (HTML sin dependencias externas)
 - **Interfaz de línea de comandos** fácil de usar
 - **Reportes de estadísticas** detallados
 
@@ -85,6 +87,20 @@ python Graph_Analysis/cooccurrence_graph.py
 
 # Visualizaciones
 python Graph_Analysis/visualization.py
+
+# Clustering jerárquico (Req. 4)
+python req4/req4.py --entrada Data/unificados.bib --salida Data/visualizations/req4
+# Genera dendrogramas en HTML (single, complete, average) y un resumen JSON
+
+# Visualizaciones bibliométricas (Req. 5)
+python req5/generate_visualizations.py --entrada Data/unificados.bib --salida Data/visualizations/req5
+# Crea PNG y un PDF con mapa geográfico, nube de palabras y línea temporal
+
+### Menú interactivo
+```bash
+python menu_requerimientos.py
+```
+- Permite elegir ejecutar el requerimiento 4 o 5 y, opcionalmente, limitar la cantidad de artículos a procesar.
 ```
 
 ## 📁 Estructura del Proyecto
@@ -142,6 +158,22 @@ El archivo `.env` debe contener:
 
 - `EMAIL_USER`: Tu email institucional
 - `EMAIL_PASSWORD`: Contraseña de aplicación de Google (para IEEE y Sage)
+
+### Ubicaciones manuales de autores (Req. 5)
+
+El script de visualizaciones (`req5/generate_visualizations.py`) intenta inferir el país del primer autor
+mediante servicios públicos (`nationalize.io` y `restcountries.com`), cacheando los resultados en
+`Data/cache/`. Si deseas fijar países manualmente para ciertos autores (o evitar llamadas externas),
+crea el archivo `Data/author_locations_override.json`, por ejemplo:
+
+```json
+{
+  "rencong huang": "China",
+  "rami a. abdel-rahem": "Jordania"
+}
+```
+
+Los nombres se comparan en minúsculas y con espacios/puntuación simples.
 
 ### Términos de Búsqueda
 
