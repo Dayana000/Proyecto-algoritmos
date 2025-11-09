@@ -1,6 +1,7 @@
 # req3/menu_req3.py
 from req2.req2 import cargar_articulos_desde_bib
-from req3.req3 import frecuencia_palabras_asociadas, nuevas_palabras_relevantes, medir_precision
+from req3.req3Backend import frecuencia_palabras_asociadas, nuevas_palabras_relevantes, medir_precision
+
 
 def iniciar_menu():
     print("\n=== FRECUENCIA DE CONCEPTOS EN ABSTRACTS ===\n")
@@ -31,8 +32,3 @@ if __name__ == "__main__":
 
 
 
-# así se llama desde el  main.py
-#from req3.menu_req3 import iniciar_menu
-
-#if __name__ == "__main__":
- #   iniciar_menu()

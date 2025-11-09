@@ -1,5 +1,7 @@
 # req2/menu_req2.py
-from req2.req2 import cargar_articulos_desde_bib, analizar_similitud
+from req2.req2Backend import analizar_similitud
+from req2.req2 import cargar_articulos_desde_bib
+
 
 def mostrar_articulos(articulos):
     print("\n===== LISTA DE ARTÍCULOS =====")
@@ -42,11 +44,14 @@ def iniciar_menu():
     print(f"Título 1: {art1['title']}")
     print(f"Título 2: {art2['title']}\n")
 
+    print("--- ALGORITMOS CLÁSICOS ---")
     print("Levenshtein (distancia):", resultados["levenshtein"])
     print("Jaccard (0-1):", resultados["jaccard"])
-    print("Coseno TF-IDF (0-1):", resultados["coseno_tfidf"])
     print("Dice (0-1):", resultados["dice"])
-    print("IA Embeddings (0-1):", resultados["ia_embeddings"])
+    print("Coseno TF-IDF (0-1):", resultados["coseno_tfidf"])
+    print("\n--- ALGORITMOS DE IA ---")
+    print("IA Embeddings SBERT (0-1):", resultados["ia_embeddings"])
+    print("IA Embeddings Paraphrase (0-1):", resultados["ia_embeddings_alt"])
     print("======================\n")
 
 if __name__ == "__main__":
