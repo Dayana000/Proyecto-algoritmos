@@ -1,0 +1,79 @@
+{
+  "total_articulos": 5,
+  "paises": {
+    "Indonesia": 1,
+    "Marruecos": 1,
+    "China": 1,
+    "Hong Kong": 1,
+    "Nepal": 1
+  },
+  "palabras_principales": {
+    "artificial": 6,
+    "intelligence": 6,
+    "learning": 5,
+    "show": 5,
+    "algorithms": 4,
+    "generative": 4,
+    "data": 3,
+    "research": 3,
+    "science": 2,
+    "paper": 2,
+    "explores": 2,
+    "applications": 2,
+    "language": 2,
+    "instructors": 2,
+    "technology": 2,
+    "development": 2,
+    "teaching": 2,
+    "application": 2,
+    "review": 2,
+    "transformed": 1,
+    "enabling": 1,
+    "advanced": 1,
+    "solutions": 1,
+    "processing": 1,
+    "predictive": 1,
+    "modeling": 1,
+    "decision": 1,
+    "making": 1,
+    "cutting": 1,
+    "edge": 1,
+    "including": 1,
+    "deep": 1,
+    "reinforcement": 1,
+    "adversarial": 1,
+    "networks": 1,
+    "gans": 1,
+    "emerging": 1,
+    "techniques": 1,
+    "like": 1,
+    "large": 1,
+    "models": 1,
+    "llms": 1,
+    "graph": 1,
+    "neural": 1,
+    "perspectives": 1,
+    "university": 1,
+    "petra": 1,
+    "specifically": 1,
+    "faculties": 1,
+    "arts": 1
+  },
+  "revistas_top": {
+    "2025 5th International Conference on Artificial Intelligence, Big Data and Algorithms (CAIBDA)": {
+      "2025": 1
+    },
+    "2025 1st International Conference on Computational Intelligence Approaches and Applications (ICCIAA)": {
+      "2025": 1
+    },
+    "2025 5th International Conference on Artificial Intelligence and Education (ICAIE)": {
+      "2025": 1
+    },
+    "2025 International Symposium on Educational Technology (ISET)": {
+      "2025": 1
+    },
+    "Unknown": {
+      "2020": 1
+    }
+  }
+}

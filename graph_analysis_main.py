@@ -43,12 +43,11 @@ def check_environment():
     
     # Verificar dependencias
     try:
-        import networkx
-        import numpy
+        import networkx  # noqa: F401
         print("✅ Dependencias de grafos encontradas")
     except ImportError as e:
         print(f"❌ Error: Dependencias faltantes - {e}")
-        print("   Ejecuta: pip install networkx numpy nltk")
+        print("   Ejecuta: pip install networkx nltk")
         return False
     
     print("✅ Entorno configurado correctamente")

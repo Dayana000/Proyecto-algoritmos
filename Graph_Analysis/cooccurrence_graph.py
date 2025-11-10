@@ -12,7 +12,6 @@ Autor: Proyecto Algoritmos UQ
 """
 
 import networkx as nx
-import numpy as np
 from collections import defaultdict, Counter
 import re
 import math
@@ -314,7 +313,10 @@ class CooccurrenceGraph:
             'average_clustering': nx.average_clustering(self.graph),
             'is_connected': nx.is_connected(self.graph),
             'number_of_components': len(list(nx.connected_components(self.graph))),
-            'average_degree': np.mean([d for n, d in self.graph.degree()]) if self.graph.number_of_nodes() > 0 else 0,
+            'average_degree': (
+                sum(d for _, d in self.graph.degree()) / self.graph.number_of_nodes()
+                if self.graph.number_of_nodes() > 0 else 0
+            ),
             'max_degree': max([d for n, d in self.graph.degree()]) if self.graph.number_of_nodes() > 0 else 0
         }
         

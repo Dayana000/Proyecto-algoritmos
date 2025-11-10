@@ -14,18 +14,92 @@ Este módulo implementa:
 """
 
 import re
-from math import sqrt
+from math import log, sqrt
+from pathlib import Path
+from typing import Dict, List, Optional
 from collections import Counter
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sentence_transformers import SentenceTransformer, util
 
-# Modelos IA para embeddings (si no están instalados: pip install sentence-transformers)
-# Modelo 1: SBERT (Sentence-BERT) - modelo ligero y rápido
-modelo_embeddings_sbert = SentenceTransformer('all-MiniLM-L6-v2')
+try:  # Dependencia opcional pesada
+    from sentence_transformers import SentenceTransformer, util
 
-# Modelo 2: Modelo alternativo para comparación (usando otro modelo de SBERT)
-# Si se quiere usar un modelo diferente, se puede cambiar aquí
-modelo_embeddings_alternativo = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+    HAS_SENTENCE_TRANSFORMERS = True
+except ImportError:  # pragma: no cover - se maneja en tiempo de ejecución
+    SentenceTransformer = None
+    util = None
+    HAS_SENTENCE_TRANSFORMERS = False
+
+_MODELO_EMBEDDINGS_SBERT: Optional[SentenceTransformer] = None
+_MODELO_EMBEDDINGS_ALTERNATIVO: Optional[SentenceTransformer] = None
+
+
+def _ensure_sbert_models() -> None:
+    """
+    Carga diferida de los modelos de embeddings solo cuando sea necesario.
+    """
+    global _MODELO_EMBEDDINGS_SBERT, _MODELO_EMBEDDINGS_ALTERNATIVO
+
+    if not HAS_SENTENCE_TRANSFORMERS:
+        return
+
+    if _MODELO_EMBEDDINGS_SBERT is None:
+        _MODELO_EMBEDDINGS_SBERT = SentenceTransformer("all-MiniLM-L6-v2")
+    if _MODELO_EMBEDDINGS_ALTERNATIVO is None:
+        _MODELO_EMBEDDINGS_ALTERNATIVO = SentenceTransformer("paraphrase-MiniLM-L6-v2")
+
+
+def cargar_articulos_desde_bib(ruta: str) -> List[Dict[str, str]]:
+    """
+    Carga artículos desde un archivo BibTeX.
+
+    Args:
+        ruta: Ruta al archivo `.bib`.
+
+    Returns:
+        Lista de diccionarios con claves mínimas: id, title, abstract, author.
+    """
+    path = Path(ruta)
+    if not path.exists():
+        raise FileNotFoundError(f"No se encontró el archivo BibTeX: {ruta}")
+
+    articulos: List[Dict[str, str]] = []
+    actual: Dict[str, str] = {}
+    identificador = ""
+    inside = False
+
+    with path.open("r", encoding="utf-8") as fh:
+        for raw_line in fh:
+            line = raw_line.strip()
+            if not line:
+                continue
+
+            if line.lower().startswith("@article"):
+                inside = True
+                actual = {}
+                if "{" in line and "," in line:
+                    identificador = line.split("{", 1)[1].split(",", 1)[0].strip()
+                else:
+                    identificador = f"ref{len(articulos)}"
+                continue
+
+            if inside and line == "}":
+                if actual:
+                    actual.setdefault("id", identificador)
+                    actual.setdefault("title", "Título desconocido")
+                    actual.setdefault("abstract", "")
+                    actual.setdefault("author", "")
+                    articulos.append(actual)
+                inside = False
+                continue
+
+            if inside and "=" in line:
+                key, value = line.split("=", 1)
+                key = key.strip().lower()
+                value = value.strip().rstrip(",").strip()
+                if value.startswith("{") and value.endswith("}"):
+                    value = value[1:-1]
+                actual[key] = value
+
+    return articulos
 
 def limpiar(texto):
     """
@@ -52,6 +126,41 @@ def limpiar(texto):
     texto = re.sub(r"\s+", " ", texto)
     # Eliminar espacios al inicio y final
     return texto.strip()
+
+
+def _tokenizar(texto: str) -> List[str]:
+    return [palabra for palabra in limpiar(texto).split() if palabra]
+
+
+def _tfidf_matrix(token_lists: List[List[str]]) -> List[List[float]]:
+    """
+    Devuelve la matriz TF-IDF (lista de listas) utilizando un esquema simple sin dependencias externas.
+    """
+    if not token_lists:
+        return []
+
+    documento_count = len(token_lists)
+    df_counter = Counter()
+    for tokens in token_lists:
+        df_counter.update(set(tokens))
+
+    vocabulario = sorted(df_counter.keys())
+    idf = {
+        termino: log((documento_count + 1) / (df_counter[termino] + 1)) + 1.0
+        for termino in vocabulario
+    }
+
+    matriz: List[List[float]] = []
+    for tokens in token_lists:
+        conteo = Counter(tokens)
+        longitud = len(tokens) or 1
+        fila: List[float] = []
+        for termino in vocabulario:
+            tf = conteo[termino] / longitud
+            fila.append(tf * idf[termino])
+        matriz.append(fila)
+
+    return matriz
 
 # -----------------------------------------------------------
 # 1) LEVENSHTEIN (Distancia de Edición)
@@ -305,27 +414,21 @@ def similitud_coseno_tfidf(a, b):
     Returns:
         float: Similitud del coseno TF-IDF entre 0 y 1
     """
-    # Crear vectorizador TF-IDF
-    vect = TfidfVectorizer()
-    
-    # Transformar textos en vectores TF-IDF
-    # Cada texto se convierte en un vector donde cada dimensión es una palabra
-    matriz = vect.fit_transform([a, b])
-    v1, v2 = matriz.toarray()
-    
-    # Calcular producto punto: suma de productos elemento por elemento
-    # v1 · v2 = Σ(v1[i] * v2[i])
-    dot = sum(v1[i] * v2[i] for i in range(len(v1)))
-    
-    # Calcular norma euclidiana de cada vector
-    # ||v|| = sqrt(Σ(vi²))
-    norma1 = sqrt(sum(x*x for x in v1))
-    norma2 = sqrt(sum(x*x for x in v2))
-    
-    # Calcular similitud del coseno
-    # cos(θ) = (v1 · v2) / (||v1|| * ||v2||)
-    # Se suma 1e-9 para evitar división por cero
-    return dot / (norma1 * norma2 + 1e-9)
+    tokens_a = _tokenizar(a)
+    tokens_b = _tokenizar(b)
+    matriz = _tfidf_matrix([tokens_a, tokens_b])
+    if not matriz or len(matriz) < 2:
+        return 0.0
+
+    v1, v2 = matriz
+    dot = sum(x * y for x, y in zip(v1, v2))
+    norma1 = sqrt(sum(x * x for x in v1))
+    norma2 = sqrt(sum(y * y for y in v2))
+
+    if norma1 == 0.0 or norma2 == 0.0:
+        return 0.0
+
+    return dot / (norma1 * norma2)
 
 # -----------------------------------------------------------
 # 5) IA EMBEDDINGS (SBERT - Sentence-BERT)
@@ -375,12 +478,14 @@ def similitud_embeddings(a, b):
     Returns:
         float: Similitud del coseno entre embeddings (0-1)
     """
-    # Codificar textos en embeddings usando el modelo SBERT
-    # convert_to_tensor=True para usar tensores de PyTorch (más eficiente)
-    emb1 = modelo_embeddings_sbert.encode(a, convert_to_tensor=True)
-    emb2 = modelo_embeddings_sbert.encode(b, convert_to_tensor=True)
-    
-    # Calcular similitud del coseno entre los embeddings
+    if not HAS_SENTENCE_TRANSFORMERS:
+        return None
+
+    _ensure_sbert_models()
+
+    emb1 = _MODELO_EMBEDDINGS_SBERT.encode(a, convert_to_tensor=True)
+    emb2 = _MODELO_EMBEDDINGS_SBERT.encode(b, convert_to_tensor=True)
+
     return float(util.cos_sim(emb1, emb2))
 
 # -----------------------------------------------------------
@@ -419,11 +524,14 @@ def similitud_embeddings_alternativo(a, b):
     Returns:
         float: Similitud del coseno entre embeddings (0-1)
     """
-    # Codificar textos con el modelo alternativo
-    emb1 = modelo_embeddings_alternativo.encode(a, convert_to_tensor=True)
-    emb2 = modelo_embeddings_alternativo.encode(b, convert_to_tensor=True)
-    
-    # Calcular similitud del coseno
+    if not HAS_SENTENCE_TRANSFORMERS:
+        return None
+
+    _ensure_sbert_models()
+
+    emb1 = _MODELO_EMBEDDINGS_ALTERNATIVO.encode(a, convert_to_tensor=True)
+    emb2 = _MODELO_EMBEDDINGS_ALTERNATIVO.encode(b, convert_to_tensor=True)
+
     return float(util.cos_sim(emb1, emb2))
 
 # -----------------------------------------------------------
@@ -442,15 +550,19 @@ def analizar_similitud(texto1, texto2):
         texto2 (str): Segundo texto (abstract del segundo artículo)
         
     Returns:
-        dict: Diccionario con los resultados de todos los algoritmos:
+        dict: Resultados de todos los algoritmos:
             - "levenshtein": int (distancia, menor es más similar)
             - "jaccard": float (0-1, mayor es más similar)
             - "dice": float (0-1, mayor es más similar)
             - "coseno_tfidf": float (0-1, mayor es más similar)
-            - "ia_embeddings": float (0-1, mayor es más similar)
-            - "ia_embeddings_alt": float (0-1, mayor es más similar)
+            - "ia_embeddings": float | None (SBERT; None si no disponible)
+            - "ia_embeddings_alt": float | None (modelo alternativo; None si no disponible)
+            - "ia_modelos_disponibles": bool (True si se cargaron correctamente)
     """
     # Ejecutar todos los algoritmos y retornar resultados en un diccionario
+    ia_principal = similitud_embeddings(texto1, texto2)
+    ia_alternativo = similitud_embeddings_alternativo(texto1, texto2)
+
     return {
         # Algoritmos clásicos (4 algoritmos)
         "levenshtein": distancia_levenshtein(texto1, texto2),  # Distancia de edición
@@ -459,8 +571,9 @@ def analizar_similitud(texto1, texto2):
         "coseno_tfidf": similitud_coseno_tfidf(texto1, texto2),  # Similitud del coseno TF-IDF
         
         # Algoritmos de IA (2 algoritmos)
-        "ia_embeddings": similitud_embeddings(texto1, texto2),                    # SBERT
-        "ia_embeddings_alt": similitud_embeddings_alternativo(texto1, texto2)      # Paraphrase-MiniLM
+        "ia_embeddings": ia_principal,                    # SBERT
+        "ia_embeddings_alt": ia_alternativo,              # Paraphrase-MiniLM
+        "ia_modelos_disponibles": HAS_SENTENCE_TRANSFORMERS,
     }
 
 

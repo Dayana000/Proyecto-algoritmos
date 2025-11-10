@@ -43,7 +43,6 @@ def check_dependencies():
         'playwright': 'Playwright',
         'dotenv': 'python-dotenv',
         'networkx': 'NetworkX',
-        'numpy': 'NumPy',
         'nltk': 'NLTK',
         'matplotlib': 'Matplotlib',
         'seaborn': 'Seaborn'

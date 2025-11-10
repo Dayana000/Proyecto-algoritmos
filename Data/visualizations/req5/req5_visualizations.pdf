@@ -9,12 +9,12 @@ endobj
 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
 endobj
 4 0 obj
-<< /Length 2614 >>
+<< /Length 2600 >>
 stream
 0.000 0.000 0.000 rg
-BT /F1 18.00 Tf 1 0 0 1 40.00 555.00 Tm (Mapa de calor geográfico por país \(primer autor\)) Tj ET
+BT /F1 18.00 Tf 1 0 0 1 40.00 555.00 Tm (Mapa de calor geografico por pais \(primer autor\)) Tj ET
 0.300 0.300 0.300 rg
-BT /F1 10.00 Tf 1 0 0 1 40.00 535.00 Tm (Estimación basada en nationalize.io + restcountries.com ) Tj ET
+BT /F1 10.00 Tf 1 0 0 1 40.00 535.00 Tm (Estimacion basada en nationalize.io + restcountries.com ) Tj ET
 0.700 0.700 0.700 RG
 1.00 w
 60.00 140.00 722.00 375.00 re S
@@ -22,57 +22,57 @@ BT /F1 10.00 Tf 1 0 0 1 40.00 535.00 Tm (Estimación basada en nationalize.io + 
 1.00 w
 60.00 202.50 m 782.00 202.50 l S
 0.000 0.000 0.000 rg
-BT /F1 9.00 Tf 1 0 0 1 15.00 197.50 Tm (-60°) Tj ET
+BT /F1 9.00 Tf 1 0 0 1 15.00 197.50 Tm (-60 ) Tj ET
 0.850 0.850 0.850 RG
 1.00 w
 60.00 265.00 m 782.00 265.00 l S
 0.000 0.000 0.000 rg
-BT /F1 9.00 Tf 1 0 0 1 15.00 260.00 Tm (-30°) Tj ET
+BT /F1 9.00 Tf 1 0 0 1 15.00 260.00 Tm (-30 ) Tj ET
 0.850 0.850 0.850 RG
 1.00 w
 60.00 327.50 m 782.00 327.50 l S
 0.000 0.000 0.000 rg
-BT /F1 9.00 Tf 1 0 0 1 15.00 322.50 Tm (0°) Tj ET
+BT /F1 9.00 Tf 1 0 0 1 15.00 322.50 Tm (0 ) Tj ET
 0.850 0.850 0.850 RG
 1.00 w
 60.00 390.00 m 782.00 390.00 l S
 0.000 0.000 0.000 rg
-BT /F1 9.00 Tf 1 0 0 1 15.00 385.00 Tm (30°) Tj ET
+BT /F1 9.00 Tf 1 0 0 1 15.00 385.00 Tm (30 ) Tj ET
 0.850 0.850 0.850 RG
 1.00 w
 60.00 452.50 m 782.00 452.50 l S
 0.000 0.000 0.000 rg
-BT /F1 9.00 Tf 1 0 0 1 15.00 447.50 Tm (60°) Tj ET
+BT /F1 9.00 Tf 1 0 0 1 15.00 447.50 Tm (60 ) Tj ET
 0.850 0.850 0.850 RG
 1.00 w
 120.17 140.00 m 120.17 515.00 l S
 0.000 0.000 0.000 rg
-BT /F1 9.00 Tf 1 0 0 1 105.17 115.00 Tm (-150°) Tj ET
+BT /F1 9.00 Tf 1 0 0 1 105.17 115.00 Tm (-150 ) Tj ET
 0.850 0.850 0.850 RG
 1.00 w
 240.50 140.00 m 240.50 515.00 l S
 0.000 0.000 0.000 rg
-BT /F1 9.00 Tf 1 0 0 1 225.50 115.00 Tm (-90°) Tj ET
+BT /F1 9.00 Tf 1 0 0 1 225.50 115.00 Tm (-90 ) Tj ET
 0.850 0.850 0.850 RG
 1.00 w
 360.83 140.00 m 360.83 515.00 l S
 0.000 0.000 0.000 rg
-BT /F1 9.00 Tf 1 0 0 1 345.83 115.00 Tm (-30°) Tj ET
+BT /F1 9.00 Tf 1 0 0 1 345.83 115.00 Tm (-30 ) Tj ET
 0.850 0.850 0.850 RG
 1.00 w
 481.17 140.00 m 481.17 515.00 l S
 0.000 0.000 0.000 rg
-BT /F1 9.00 Tf 1 0 0 1 466.17 115.00 Tm (30°) Tj ET
+BT /F1 9.00 Tf 1 0 0 1 466.17 115.00 Tm (30 ) Tj ET
 0.850 0.850 0.850 RG
 1.00 w
 601.50 140.00 m 601.50 515.00 l S
 0.000 0.000 0.000 rg
-BT /F1 9.00 Tf 1 0 0 1 586.50 115.00 Tm (90°) Tj ET
+BT /F1 9.00 Tf 1 0 0 1 586.50 115.00 Tm (90 ) Tj ET
 0.850 0.850 0.850 RG
 1.00 w
 721.83 140.00 m 721.83 515.00 l S
 0.000 0.000 0.000 rg
-BT /F1 9.00 Tf 1 0 0 1 706.83 115.00 Tm (150°) Tj ET
+BT /F1 9.00 Tf 1 0 0 1 706.83 115.00 Tm (150 ) Tj ET
 1.000 0.750 0.000 rg
 0.600 0.600 0.600 RG
 0.50 w
@@ -122,256 +122,256 @@ BT /F1 10.00 Tf 1 0 0 1 40.00 535.00 Tm (Frecuencia relativa en abstracts y keyw
 0.800 0.800 0.800 RG
 1.00 w
 40.00 80.00 762.00 455.00 re S
-0.234 0.328 0.169 rg
-BT /F1 36.00 Tf 1 0 0 1 65.62 493.98 Tm (artificial) Tj ET
-0.197 0.115 0.393 rg
-BT /F1 36.00 Tf 1 0 0 1 100.54 517.07 Tm (intelligence) Tj ET
-0.127 0.106 0.397 rg
-BT /F1 27.33 Tf 1 0 0 1 169.07 490.10 Tm (show) Tj ET
-0.382 0.364 0.346 rg
-BT /F1 25.60 Tf 1 0 0 1 200.63 503.18 Tm (generative) Tj ET
-0.214 0.373 0.372 rg
-BT /F1 23.87 Tf 1 0 0 1 252.00 523.30 Tm (education) Tj ET
-0.395 0.370 0.123 rg
-BT /F1 22.13 Tf 1 0 0 1 296.29 523.03 Tm (learning) Tj ET
-0.313 0.337 0.205 rg
-BT /F1 16.93 Tf 1 0 0 1 355.04 514.81 Tm (data) Tj ET
-0.183 0.331 0.289 rg
-BT /F1 16.93 Tf 1 0 0 1 393.45 498.78 Tm (algorithms) Tj ET
-0.166 0.262 0.203 rg
-BT /F1 16.93 Tf 1 0 0 1 458.25 495.31 Tm (research) Tj ET
-0.195 0.313 0.275 rg
-BT /F1 16.93 Tf 1 0 0 1 482.17 523.30 Tm (technology) Tj ET
-0.272 0.382 0.150 rg
-BT /F1 16.93 Tf 1 0 0 1 541.25 514.94 Tm (teaching) Tj ET
-0.193 0.189 0.195 rg
-BT /F1 16.93 Tf 1 0 0 1 582.64 508.42 Tm (defense) Tj ET
-0.283 0.358 0.145 rg
-BT /F1 15.20 Tf 1 0 0 1 633.34 509.60 Tm (emerging) Tj ET
-0.353 0.388 0.398 rg
-BT /F1 15.20 Tf 1 0 0 1 685.05 517.69 Tm (study) Tj ET
-0.254 0.252 0.387 rg
-BT /F1 15.20 Tf 1 0 0 1 739.11 520.72 Tm (development) Tj ET
-0.274 0.138 0.240 rg
-BT /F1 15.20 Tf 1 0 0 1 781.25 508.58 Tm (field) Tj ET
-0.375 0.385 0.191 rg
-BT /F1 15.20 Tf 1 0 0 1 67.22 446.55 Tm (application) Tj ET
-0.127 0.106 0.178 rg
-BT /F1 15.20 Tf 1 0 0 1 112.15 436.80 Tm (significant) Tj ET
-0.344 0.141 0.150 rg
-BT /F1 15.20 Tf 1 0 0 1 157.27 438.83 Tm (literature) Tj ET
-0.225 0.303 0.151 rg
-BT /F1 15.20 Tf 1 0 0 1 204.60 450.55 Tm (network) Tj ET
-0.155 0.188 0.379 rg
-BT /F1 13.47 Tf 1 0 0 1 256.64 434.06 Tm (science) Tj ET
-0.264 0.105 0.374 rg
-BT /F1 13.47 Tf 1 0 0 1 314.63 448.77 Tm (paper) Tj ET
-0.126 0.377 0.304 rg
-BT /F1 13.47 Tf 1 0 0 1 346.01 437.77 Tm (explores) Tj ET
-0.327 0.314 0.327 rg
-BT /F1 13.47 Tf 1 0 0 1 388.13 463.45 Tm (applications) Tj ET
-0.249 0.137 0.289 rg
-BT /F1 13.47 Tf 1 0 0 1 453.79 460.36 Tm (adversarial) Tj ET
-0.102 0.365 0.381 rg
-BT /F1 13.47 Tf 1 0 0 1 487.32 436.27 Tm (language) Tj ET
-0.388 0.321 0.395 rg
-BT /F1 13.47 Tf 1 0 0 1 544.64 451.34 Tm (instructors) Tj ET
-0.255 0.211 0.284 rg
-BT /F1 13.47 Tf 1 0 0 1 587.22 449.13 Tm (technologies) Tj ET
-0.125 0.112 0.328 rg
-BT /F1 13.47 Tf 1 0 0 1 637.44 450.24 Tm (rapid) Tj ET
-0.279 0.362 0.176 rg
-BT /F1 13.47 Tf 1 0 0 1 692.15 451.33 Tm (there) Tj ET
-0.153 0.148 0.324 rg
-BT /F1 13.47 Tf 1 0 0 1 722.95 458.94 Tm (problems) Tj ET
-0.339 0.216 0.105 rg
-BT /F1 13.47 Tf 1 0 0 1 780.83 464.94 Tm (review) Tj ET
-0.372 0.316 0.365 rg
-BT /F1 13.47 Tf 1 0 0 1 72.85 391.14 Tm (relevant) Tj ET
-0.240 0.294 0.335 rg
-BT /F1 13.47 Tf 1 0 0 1 109.92 391.16 Tm (based) Tj ET
-0.257 0.337 0.331 rg
-BT /F1 13.47 Tf 1 0 0 1 153.92 376.05 Tm (approaches) Tj ET
-0.197 0.376 0.184 rg
-BT /F1 13.47 Tf 1 0 0 1 216.92 385.74 Tm (trend) Tj ET
-0.219 0.122 0.338 rg
-BT /F1 13.47 Tf 1 0 0 1 257.14 403.11 Tm (recent) Tj ET
-0.131 0.204 0.325 rg
-BT /F1 13.47 Tf 1 0 0 1 298.29 409.65 Tm (themes) Tj ET
-0.307 0.207 0.386 rg
-BT /F1 13.47 Tf 1 0 0 1 344.69 404.29 Tm (have) Tj ET
-0.186 0.282 0.382 rg
-BT /F1 13.47 Tf 1 0 0 1 388.33 379.34 Tm (lifelong) Tj ET
-0.369 0.201 0.111 rg
-BT /F1 13.47 Tf 1 0 0 1 455.65 392.26 Tm (applied) Tj ET
-0.266 0.223 0.190 rg
-BT /F1 13.47 Tf 1 0 0 1 479.50 385.00 Tm (method) Tj ET
-0.143 0.393 0.396 rg
-BT /F1 13.47 Tf 1 0 0 1 529.16 399.73 Tm (primary) Tj ET
-0.101 0.232 0.286 rg
-BT /F1 13.47 Tf 1 0 0 1 583.84 403.42 Tm (school) Tj ET
-0.111 0.293 0.220 rg
-BT /F1 13.47 Tf 1 0 0 1 632.16 395.53 Tm (high) Tj ET
-0.243 0.344 0.142 rg
-BT /F1 13.47 Tf 1 0 0 1 671.33 394.19 Tm (detection) Tj ET
-0.109 0.282 0.163 rg
-BT /F1 11.73 Tf 1 0 0 1 716.99 392.32 Tm (transformed) Tj ET
-0.107 0.333 0.321 rg
-BT /F1 11.73 Tf 1 0 0 1 765.63 378.49 Tm (enabling) Tj ET
-0.139 0.135 0.222 rg
-BT /F1 11.73 Tf 1 0 0 1 69.98 348.69 Tm (advanced) Tj ET
-0.138 0.244 0.253 rg
-BT /F1 11.73 Tf 1 0 0 1 105.68 350.84 Tm (solutions) Tj ET
-0.329 0.327 0.329 rg
-BT /F1 11.73 Tf 1 0 0 1 146.63 332.26 Tm (processing) Tj ET
-0.373 0.288 0.342 rg
-BT /F1 11.73 Tf 1 0 0 1 202.57 325.29 Tm (predictive) Tj ET
-0.262 0.320 0.229 rg
-BT /F1 11.73 Tf 1 0 0 1 261.26 347.04 Tm (modeling) Tj ET
-0.178 0.264 0.354 rg
-BT /F1 11.73 Tf 1 0 0 1 309.20 337.90 Tm (decision) Tj ET
-0.187 0.142 0.221 rg
-BT /F1 11.73 Tf 1 0 0 1 360.90 346.55 Tm (making) Tj ET
-0.196 0.306 0.364 rg
-BT /F1 11.73 Tf 1 0 0 1 386.64 324.27 Tm (cutting) Tj ET
-0.213 0.252 0.143 rg
-BT /F1 11.73 Tf 1 0 0 1 431.88 334.95 Tm (edge) Tj ET
-0.124 0.339 0.233 rg
-BT /F1 11.73 Tf 1 0 0 1 490.75 333.87 Tm (including) Tj ET
-0.349 0.247 0.363 rg
-BT /F1 11.73 Tf 1 0 0 1 543.77 337.31 Tm (deep) Tj ET
-0.376 0.128 0.311 rg
-BT /F1 11.73 Tf 1 0 0 1 592.68 340.13 Tm (reinforcement) Tj ET
-0.350 0.325 0.122 rg
-BT /F1 11.73 Tf 1 0 0 1 647.81 339.68 Tm (networks) Tj ET
-0.359 0.194 0.185 rg
-BT /F1 11.73 Tf 1 0 0 1 691.23 338.85 Tm (gans) Tj ET
-0.172 0.100 0.358 rg
-BT /F1 11.73 Tf 1 0 0 1 730.18 328.40 Tm (techniques) Tj ET
-0.339 0.346 0.154 rg
-BT /F1 11.73 Tf 1 0 0 1 767.16 350.21 Tm (like) Tj ET
-0.352 0.230 0.218 rg
-BT /F1 11.73 Tf 1 0 0 1 64.84 288.98 Tm (large) Tj ET
-0.260 0.362 0.303 rg
-BT /F1 11.73 Tf 1 0 0 1 118.52 275.13 Tm (models) Tj ET
-0.282 0.139 0.327 rg
-BT /F1 11.73 Tf 1 0 0 1 146.64 268.30 Tm (llms) Tj ET
-0.287 0.282 0.342 rg
-BT /F1 11.73 Tf 1 0 0 1 198.68 270.58 Tm (graph) Tj ET
-0.399 0.268 0.309 rg
-BT /F1 11.73 Tf 1 0 0 1 261.14 277.73 Tm (neural) Tj ET
-0.133 0.226 0.105 rg
-BT /F1 11.73 Tf 1 0 0 1 304.67 267.93 Tm (perspectives) Tj ET
-0.353 0.300 0.182 rg
-BT /F1 11.73 Tf 1 0 0 1 338.06 262.49 Tm (university) Tj ET
-0.379 0.376 0.208 rg
-BT /F1 11.73 Tf 1 0 0 1 408.84 289.59 Tm (petra) Tj ET
-0.112 0.223 0.347 rg
-BT /F1 11.73 Tf 1 0 0 1 440.51 276.07 Tm (specifically) Tj ET
-0.302 0.264 0.257 rg
-BT /F1 11.73 Tf 1 0 0 1 489.90 278.88 Tm (faculties) Tj ET
-0.203 0.190 0.353 rg
-BT /F1 11.73 Tf 1 0 0 1 527.10 276.61 Tm (arts) Tj ET
-0.152 0.110 0.127 rg
-BT /F1 11.73 Tf 1 0 0 1 578.91 293.83 Tm (information) Tj ET
-0.257 0.286 0.260 rg
-BT /F1 11.73 Tf 1 0 0 1 624.01 283.47 Tm (regarding) Tj ET
-0.208 0.232 0.136 rg
-BT /F1 11.73 Tf 1 0 0 1 695.33 263.59 Tm (personalized) Tj ET
-0.195 0.174 0.118 rg
-BT /F1 11.73 Tf 1 0 0 1 729.09 288.77 Tm (tools) Tj ET
-0.371 0.234 0.281 rg
-BT /F1 11.73 Tf 1 0 0 1 771.79 267.94 Tm (examines) Tj ET
-0.343 0.160 0.260 rg
-BT /F1 11.73 Tf 1 0 0 1 66.71 211.64 Tm (views) Tj ET
-0.108 0.234 0.315 rg
-BT /F1 11.73 Tf 1 0 0 1 116.45 223.32 Tm (theoretical) Tj ET
-0.174 0.251 0.280 rg
-BT /F1 11.73 Tf 1 0 0 1 169.93 229.97 Tm (foundations) Tj ET
-0.245 0.367 0.331 rg
-BT /F1 11.73 Tf 1 0 0 1 198.27 224.47 Tm (perceive) Tj ET
-0.358 0.199 0.178 rg
-BT /F1 11.73 Tf 1 0 0 1 241.41 223.06 Tm (accelerated) Tj ET
-0.323 0.200 0.106 rg
-BT /F1 11.73 Tf 1 0 0 1 288.13 224.06 Tm (reform) Tj ET
-0.247 0.169 0.344 rg
-BT /F1 11.73 Tf 1 0 0 1 340.80 222.23 Tm (opened) Tj ET
-0.118 0.123 0.271 rg
-BT /F1 11.73 Tf 1 0 0 1 395.48 213.39 Tm (path) Tj ET
-0.296 0.376 0.210 rg
-BT /F1 11.73 Tf 1 0 0 1 446.94 224.28 Tm (english) Tj ET
-0.191 0.115 0.173 rg
-BT /F1 11.73 Tf 1 0 0 1 491.69 232.32 Tm (writing) Tj ET
-0.250 0.167 0.137 rg
-BT /F1 11.73 Tf 1 0 0 1 545.57 217.71 Tm (middle) Tj ET
-0.191 0.177 0.372 rg
-BT /F1 11.73 Tf 1 0 0 1 601.60 227.20 Tm (schools) Tj ET
-0.114 0.307 0.377 rg
-BT /F1 11.73 Tf 1 0 0 1 645.90 225.10 Tm (however) Tj ET
-0.356 0.154 0.245 rg
-BT /F1 11.73 Tf 1 0 0 1 690.93 223.83 Tm (actual) Tj ET
-0.117 0.342 0.275 rg
-BT /F1 11.73 Tf 1 0 0 1 721.76 237.84 Tm (process) Tj ET
-0.292 0.181 0.141 rg
-BT /F1 11.73 Tf 1 0 0 1 772.53 213.82 Tm (still) Tj ET
-0.234 0.138 0.307 rg
-BT /F1 11.73 Tf 1 0 0 1 59.27 159.51 Tm (rigid) Tj ET
-0.139 0.110 0.232 rg
-BT /F1 11.73 Tf 1 0 0 1 113.25 154.57 Tm (lack) Tj ET
-0.112 0.320 0.275 rg
-BT /F1 11.73 Tf 1 0 0 1 169.53 157.45 Tm (support) Tj ET
-0.176 0.114 0.126 rg
-BT /F1 11.73 Tf 1 0 0 1 193.35 158.64 Tm (presents) Tj ET
-0.280 0.237 0.289 rg
-BT /F1 11.73 Tf 1 0 0 1 263.44 159.44 Tm (comprehensive) Tj ET
-0.155 0.389 0.199 rg
-BT /F1 11.73 Tf 1 0 0 1 299.33 152.33 Tm (studies) Tj ET
-0.160 0.333 0.170 rg
-BT /F1 11.73 Tf 1 0 0 1 358.05 166.46 Tm (analytics) Tj ET
-0.331 0.357 0.273 rg
-BT /F1 11.73 Tf 1 0 0 1 394.63 168.90 Tm (encompasses) Tj ET
-0.182 0.227 0.248 rg
-BT /F1 11.73 Tf 1 0 0 1 455.34 178.53 Tm (articles) Tj ET
-0.359 0.197 0.256 rg
-BT /F1 11.73 Tf 1 0 0 1 491.61 171.11 Tm (sourced) Tj ET
-0.319 0.123 0.257 rg
-BT /F1 11.73 Tf 1 0 0 1 551.77 168.07 Tm (scopus) Tj ET
-0.180 0.248 0.351 rg
-BT /F1 11.73 Tf 1 0 0 1 596.28 175.67 Tm (spanning) Tj ET
-0.378 0.379 0.221 rg
-BT /F1 11.73 Tf 1 0 0 1 623.93 153.38 Tm (years) Tj ET
-0.348 0.112 0.157 rg
-BT /F1 11.73 Tf 1 0 0 1 679.58 170.32 Tm (results) Tj ET
-0.179 0.344 0.369 rg
-BT /F1 11.73 Tf 1 0 0 1 722.15 150.57 Tm (reveal) Tj ET
-0.366 0.209 0.184 rg
-BT /F1 11.73 Tf 1 0 0 1 783.67 181.77 Tm (patterns) Tj ET
-0.296 0.336 0.283 rg
-BT /F1 11.73 Tf 1 0 0 1 57.23 122.68 Tm (publications) Tj ET
-0.209 0.267 0.376 rg
-BT /F1 11.73 Tf 1 0 0 1 123.44 120.93 Tm (regions) Tj ET
-0.296 0.214 0.298 rg
-BT /F1 11.73 Tf 1 0 0 1 163.04 92.78 Tm (authors) Tj ET
-0.346 0.187 0.295 rg
-BT /F1 11.73 Tf 1 0 0 1 195.89 92.01 Tm (affiliations) Tj ET
-0.334 0.161 0.271 rg
-BT /F1 11.73 Tf 1 0 0 1 247.54 124.98 Tm (methods) Tj ET
-0.269 0.217 0.225 rg
-BT /F1 11.73 Tf 1 0 0 1 295.74 99.46 Tm (objectives) Tj ET
-0.124 0.211 0.196 rg
-BT /F1 11.73 Tf 1 0 0 1 341.23 104.48 Tm (issues) Tj ET
-0.377 0.168 0.351 rg
-BT /F1 11.73 Tf 1 0 0 1 396.31 109.07 Tm (types) Tj ET
+0.245 0.177 0.395 rg
+BT /F1 36.00 Tf 1 0 0 1 51.86 518.77 Tm (artificial) Tj ET
+0.392 0.192 0.391 rg
+BT /F1 36.00 Tf 1 0 0 1 122.73 515.92 Tm (intelligence) Tj ET
+0.181 0.283 0.368 rg
+BT /F1 27.33 Tf 1 0 0 1 162.13 508.41 Tm (show) Tj ET
+0.137 0.355 0.179 rg
+BT /F1 25.60 Tf 1 0 0 1 207.47 517.50 Tm (generative) Tj ET
+0.168 0.337 0.333 rg
+BT /F1 23.87 Tf 1 0 0 1 243.08 498.07 Tm (education) Tj ET
+0.135 0.173 0.124 rg
+BT /F1 22.13 Tf 1 0 0 1 311.41 516.51 Tm (learning) Tj ET
+0.144 0.278 0.116 rg
+BT /F1 16.93 Tf 1 0 0 1 343.94 496.47 Tm (data) Tj ET
+0.390 0.208 0.132 rg
+BT /F1 16.93 Tf 1 0 0 1 390.99 512.99 Tm (algorithms) Tj ET
+0.219 0.210 0.140 rg
+BT /F1 16.93 Tf 1 0 0 1 445.59 499.11 Tm (research) Tj ET
+0.117 0.336 0.187 rg
+BT /F1 16.93 Tf 1 0 0 1 481.59 490.55 Tm (technology) Tj ET
+0.154 0.112 0.257 rg
+BT /F1 16.93 Tf 1 0 0 1 541.63 492.00 Tm (teaching) Tj ET
+0.320 0.276 0.107 rg
+BT /F1 16.93 Tf 1 0 0 1 599.53 501.25 Tm (defense) Tj ET
+0.386 0.344 0.247 rg
+BT /F1 15.20 Tf 1 0 0 1 639.50 497.02 Tm (emerging) Tj ET
+0.303 0.174 0.338 rg
+BT /F1 15.20 Tf 1 0 0 1 681.58 512.51 Tm (study) Tj ET
+0.205 0.113 0.214 rg
+BT /F1 15.20 Tf 1 0 0 1 742.90 504.40 Tm (development) Tj ET
+0.114 0.226 0.210 rg
+BT /F1 15.20 Tf 1 0 0 1 776.66 520.08 Tm (field) Tj ET
+0.153 0.314 0.278 rg
+BT /F1 15.20 Tf 1 0 0 1 51.12 449.99 Tm (application) Tj ET
+0.371 0.382 0.125 rg
+BT /F1 15.20 Tf 1 0 0 1 101.40 446.96 Tm (significant) Tj ET
+0.316 0.270 0.327 rg
+BT /F1 15.20 Tf 1 0 0 1 162.90 438.85 Tm (literature) Tj ET
+0.298 0.236 0.179 rg
+BT /F1 15.20 Tf 1 0 0 1 212.19 457.37 Tm (network) Tj ET
+0.327 0.151 0.255 rg
+BT /F1 13.47 Tf 1 0 0 1 264.92 459.57 Tm (science) Tj ET
+0.386 0.312 0.171 rg
+BT /F1 13.47 Tf 1 0 0 1 300.70 442.34 Tm (paper) Tj ET
+0.231 0.312 0.174 rg
+BT /F1 13.47 Tf 1 0 0 1 350.80 438.71 Tm (explores) Tj ET
+0.270 0.331 0.357 rg
+BT /F1 13.47 Tf 1 0 0 1 405.68 435.46 Tm (applications) Tj ET
+0.129 0.398 0.356 rg
+BT /F1 13.47 Tf 1 0 0 1 457.17 456.95 Tm (adversarial) Tj ET
+0.178 0.126 0.163 rg
+BT /F1 13.47 Tf 1 0 0 1 503.53 447.40 Tm (language) Tj ET
+0.153 0.190 0.191 rg
+BT /F1 13.47 Tf 1 0 0 1 541.51 458.86 Tm (instructors) Tj ET
+0.111 0.131 0.273 rg
+BT /F1 13.47 Tf 1 0 0 1 594.91 453.05 Tm (technologies) Tj ET
+0.346 0.159 0.351 rg
+BT /F1 13.47 Tf 1 0 0 1 631.48 465.93 Tm (rapid) Tj ET
+0.274 0.332 0.264 rg
+BT /F1 13.47 Tf 1 0 0 1 675.26 442.69 Tm (there) Tj ET
+0.142 0.202 0.298 rg
+BT /F1 13.47 Tf 1 0 0 1 733.12 442.28 Tm (problems) Tj ET
+0.173 0.376 0.192 rg
+BT /F1 13.47 Tf 1 0 0 1 790.88 463.00 Tm (review) Tj ET
+0.387 0.371 0.154 rg
+BT /F1 13.47 Tf 1 0 0 1 72.95 408.13 Tm (relevant) Tj ET
+0.320 0.199 0.241 rg
+BT /F1 13.47 Tf 1 0 0 1 107.61 378.20 Tm (based) Tj ET
+0.315 0.106 0.368 rg
+BT /F1 13.47 Tf 1 0 0 1 159.26 404.49 Tm (approaches) Tj ET
+0.152 0.135 0.291 rg
+BT /F1 13.47 Tf 1 0 0 1 204.67 377.60 Tm (trend) Tj ET
+0.268 0.187 0.293 rg
+BT /F1 13.47 Tf 1 0 0 1 261.47 391.22 Tm (recent) Tj ET
+0.103 0.249 0.141 rg
+BT /F1 13.47 Tf 1 0 0 1 294.72 388.65 Tm (themes) Tj ET
+0.173 0.163 0.235 rg
+BT /F1 13.47 Tf 1 0 0 1 347.22 388.95 Tm (have) Tj ET
+0.360 0.188 0.353 rg
+BT /F1 13.47 Tf 1 0 0 1 404.98 383.21 Tm (lifelong) Tj ET
+0.235 0.396 0.285 rg
+BT /F1 13.47 Tf 1 0 0 1 453.51 401.16 Tm (applied) Tj ET
+0.368 0.391 0.341 rg
+BT /F1 13.47 Tf 1 0 0 1 487.06 383.23 Tm (method) Tj ET
+0.111 0.175 0.158 rg
+BT /F1 13.47 Tf 1 0 0 1 528.47 402.76 Tm (primary) Tj ET
+0.259 0.315 0.255 rg
+BT /F1 13.47 Tf 1 0 0 1 598.41 377.78 Tm (school) Tj ET
+0.128 0.398 0.103 rg
+BT /F1 13.47 Tf 1 0 0 1 639.84 394.78 Tm (high) Tj ET
+0.296 0.104 0.222 rg
+BT /F1 13.47 Tf 1 0 0 1 694.74 393.88 Tm (detection) Tj ET
+0.257 0.357 0.225 rg
+BT /F1 11.73 Tf 1 0 0 1 720.63 390.36 Tm (transformed) Tj ET
+0.253 0.323 0.148 rg
+BT /F1 11.73 Tf 1 0 0 1 776.35 390.00 Tm (enabling) Tj ET
+0.160 0.287 0.195 rg
+BT /F1 11.73 Tf 1 0 0 1 54.06 337.21 Tm (advanced) Tj ET
+0.328 0.224 0.237 rg
+BT /F1 11.73 Tf 1 0 0 1 125.27 327.48 Tm (solutions) Tj ET
+0.197 0.248 0.325 rg
+BT /F1 11.73 Tf 1 0 0 1 166.61 329.10 Tm (processing) Tj ET
+0.317 0.172 0.268 rg
+BT /F1 11.73 Tf 1 0 0 1 211.46 334.80 Tm (predictive) Tj ET
+0.353 0.261 0.212 rg
+BT /F1 11.73 Tf 1 0 0 1 254.76 351.68 Tm (modeling) Tj ET
+0.247 0.155 0.171 rg
+BT /F1 11.73 Tf 1 0 0 1 305.39 342.90 Tm (decision) Tj ET
+0.216 0.213 0.178 rg
+BT /F1 11.73 Tf 1 0 0 1 362.10 331.58 Tm (making) Tj ET
+0.298 0.237 0.143 rg
+BT /F1 11.73 Tf 1 0 0 1 402.54 333.02 Tm (cutting) Tj ET
+0.195 0.260 0.318 rg
+BT /F1 11.73 Tf 1 0 0 1 452.77 351.41 Tm (edge) Tj ET
+0.298 0.194 0.316 rg
+BT /F1 11.73 Tf 1 0 0 1 486.33 352.93 Tm (including) Tj ET
+0.260 0.277 0.215 rg
+BT /F1 11.73 Tf 1 0 0 1 534.27 351.98 Tm (deep) Tj ET
+0.290 0.199 0.244 rg
+BT /F1 11.73 Tf 1 0 0 1 585.68 341.46 Tm (reinforcement) Tj ET
+0.247 0.320 0.175 rg
+BT /F1 11.73 Tf 1 0 0 1 625.16 350.91 Tm (networks) Tj ET
+0.383 0.323 0.247 rg
+BT /F1 11.73 Tf 1 0 0 1 668.71 343.05 Tm (gans) Tj ET
+0.316 0.152 0.352 rg
+BT /F1 11.73 Tf 1 0 0 1 726.58 340.76 Tm (techniques) Tj ET
+0.396 0.276 0.211 rg
+BT /F1 11.73 Tf 1 0 0 1 785.63 327.33 Tm (like) Tj ET
+0.322 0.212 0.240 rg
+BT /F1 11.73 Tf 1 0 0 1 54.13 288.01 Tm (large) Tj ET
+0.365 0.243 0.192 rg
+BT /F1 11.73 Tf 1 0 0 1 114.27 274.19 Tm (models) Tj ET
+0.232 0.353 0.355 rg
+BT /F1 11.73 Tf 1 0 0 1 166.73 287.64 Tm (llms) Tj ET
+0.283 0.333 0.145 rg
+BT /F1 11.73 Tf 1 0 0 1 194.88 268.13 Tm (graph) Tj ET
+0.318 0.365 0.255 rg
+BT /F1 11.73 Tf 1 0 0 1 255.40 271.95 Tm (neural) Tj ET
+0.248 0.335 0.351 rg
+BT /F1 11.73 Tf 1 0 0 1 304.43 279.37 Tm (perspectives) Tj ET
+0.318 0.332 0.213 rg
+BT /F1 11.73 Tf 1 0 0 1 341.17 295.57 Tm (university) Tj ET
+0.197 0.103 0.399 rg
+BT /F1 11.73 Tf 1 0 0 1 408.87 277.34 Tm (petra) Tj ET
+0.374 0.113 0.378 rg
+BT /F1 11.73 Tf 1 0 0 1 431.12 268.70 Tm (specifically) Tj ET
+0.280 0.114 0.129 rg
+BT /F1 11.73 Tf 1 0 0 1 480.27 292.86 Tm (faculties) Tj ET
+0.326 0.153 0.144 rg
+BT /F1 11.73 Tf 1 0 0 1 537.32 266.42 Tm (arts) Tj ET
+0.305 0.218 0.117 rg
+BT /F1 11.73 Tf 1 0 0 1 583.02 264.09 Tm (information) Tj ET
+0.173 0.286 0.205 rg
+BT /F1 11.73 Tf 1 0 0 1 633.66 264.62 Tm (regarding) Tj ET
+0.265 0.230 0.239 rg
+BT /F1 11.73 Tf 1 0 0 1 690.57 270.71 Tm (personalized) Tj ET
+0.311 0.241 0.273 rg
+BT /F1 11.73 Tf 1 0 0 1 731.20 291.85 Tm (tools) Tj ET
+0.112 0.335 0.148 rg
+BT /F1 11.73 Tf 1 0 0 1 778.33 268.79 Tm (examines) Tj ET
+0.330 0.145 0.229 rg
+BT /F1 11.73 Tf 1 0 0 1 64.04 207.77 Tm (views) Tj ET
+0.178 0.349 0.135 rg
+BT /F1 11.73 Tf 1 0 0 1 113.82 230.23 Tm (theoretical) Tj ET
+0.345 0.390 0.287 rg
+BT /F1 11.73 Tf 1 0 0 1 168.22 227.02 Tm (foundations) Tj ET
+0.204 0.299 0.373 rg
+BT /F1 11.73 Tf 1 0 0 1 193.73 215.99 Tm (perceive) Tj ET
+0.162 0.133 0.340 rg
+BT /F1 11.73 Tf 1 0 0 1 253.65 216.98 Tm (accelerated) Tj ET
+0.176 0.397 0.332 rg
+BT /F1 11.73 Tf 1 0 0 1 298.94 215.13 Tm (reform) Tj ET
+0.121 0.173 0.343 rg
+BT /F1 11.73 Tf 1 0 0 1 352.77 217.34 Tm (opened) Tj ET
+0.233 0.229 0.291 rg
+BT /F1 11.73 Tf 1 0 0 1 385.52 224.55 Tm (path) Tj ET
+0.305 0.140 0.216 rg
+BT /F1 11.73 Tf 1 0 0 1 457.35 222.04 Tm (english) Tj ET
+0.168 0.318 0.177 rg
+BT /F1 11.73 Tf 1 0 0 1 503.34 213.32 Tm (writing) Tj ET
+0.336 0.165 0.199 rg
+BT /F1 11.73 Tf 1 0 0 1 534.21 207.28 Tm (middle) Tj ET
+0.323 0.284 0.188 rg
+BT /F1 11.73 Tf 1 0 0 1 594.31 218.18 Tm (schools) Tj ET
+0.136 0.181 0.296 rg
+BT /F1 11.73 Tf 1 0 0 1 631.56 210.47 Tm (however) Tj ET
+0.199 0.161 0.381 rg
+BT /F1 11.73 Tf 1 0 0 1 687.11 230.75 Tm (actual) Tj ET
+0.263 0.106 0.317 rg
+BT /F1 11.73 Tf 1 0 0 1 724.26 219.62 Tm (process) Tj ET
+0.134 0.328 0.322 rg
+BT /F1 11.73 Tf 1 0 0 1 782.86 222.31 Tm (still) Tj ET
+0.282 0.352 0.399 rg
+BT /F1 11.73 Tf 1 0 0 1 61.57 157.52 Tm (rigid) Tj ET
+0.327 0.278 0.205 rg
+BT /F1 11.73 Tf 1 0 0 1 106.34 149.39 Tm (lack) Tj ET
+0.357 0.139 0.160 rg
+BT /F1 11.73 Tf 1 0 0 1 156.09 180.08 Tm (support) Tj ET
+0.165 0.135 0.234 rg
+BT /F1 11.73 Tf 1 0 0 1 192.94 149.08 Tm (presents) Tj ET
+0.311 0.237 0.264 rg
+BT /F1 11.73 Tf 1 0 0 1 254.96 179.18 Tm (comprehensive) Tj ET
+0.383 0.326 0.271 rg
+BT /F1 11.73 Tf 1 0 0 1 297.32 149.80 Tm (studies) Tj ET
+0.158 0.314 0.324 rg
+BT /F1 11.73 Tf 1 0 0 1 337.01 182.13 Tm (analytics) Tj ET
+0.391 0.174 0.312 rg
+BT /F1 11.73 Tf 1 0 0 1 404.36 156.05 Tm (encompasses) Tj ET
+0.211 0.125 0.368 rg
+BT /F1 11.73 Tf 1 0 0 1 430.71 150.69 Tm (articles) Tj ET
+0.173 0.152 0.174 rg
+BT /F1 11.73 Tf 1 0 0 1 488.45 158.72 Tm (sourced) Tj ET
+0.283 0.122 0.172 rg
+BT /F1 11.73 Tf 1 0 0 1 543.26 163.18 Tm (scopus) Tj ET
+0.148 0.398 0.197 rg
+BT /F1 11.73 Tf 1 0 0 1 598.09 174.64 Tm (spanning) Tj ET
+0.349 0.291 0.346 rg
+BT /F1 11.73 Tf 1 0 0 1 624.39 175.02 Tm (years) Tj ET
+0.175 0.257 0.312 rg
+BT /F1 11.73 Tf 1 0 0 1 677.21 156.72 Tm (results) Tj ET
+0.282 0.315 0.244 rg
+BT /F1 11.73 Tf 1 0 0 1 738.49 150.36 Tm (reveal) Tj ET
+0.366 0.192 0.109 rg
+BT /F1 11.73 Tf 1 0 0 1 785.89 162.38 Tm (patterns) Tj ET
+0.138 0.194 0.124 rg
+BT /F1 11.73 Tf 1 0 0 1 67.60 122.09 Tm (publications) Tj ET
+0.332 0.261 0.141 rg
+BT /F1 11.73 Tf 1 0 0 1 111.41 101.10 Tm (regions) Tj ET
+0.292 0.301 0.231 rg
+BT /F1 11.73 Tf 1 0 0 1 148.67 106.04 Tm (authors) Tj ET
+0.225 0.144 0.314 rg
+BT /F1 11.73 Tf 1 0 0 1 198.97 92.45 Tm (affiliations) Tj ET
+0.135 0.147 0.332 rg
+BT /F1 11.73 Tf 1 0 0 1 258.07 93.89 Tm (methods) Tj ET
+0.297 0.209 0.284 rg
+BT /F1 11.73 Tf 1 0 0 1 311.94 101.87 Tm (objectives) Tj ET
+0.354 0.134 0.319 rg
+BT /F1 11.73 Tf 1 0 0 1 363.34 104.64 Tm (issues) Tj ET
+0.109 0.218 0.316 rg
+BT /F1 11.73 Tf 1 0 0 1 394.55 98.48 Tm (types) Tj ET
 endstream
 endobj
 7 0 obj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 842.00 595.00] /Resources << /Font << /F1 3 0 R >> >> /Contents 6 0 R >>
 endobj
 8 0 obj
-<< /Length 2350 >>
+<< /Length 2348 >>
 stream
 0.000 0.000 0.000 rg
-BT /F1 18.00 Tf 1 0 0 1 40.00 555.00 Tm (Línea temporal de publicaciones por año y revista) Tj ET
+BT /F1 18.00 Tf 1 0 0 1 40.00 555.00 Tm (Linea temporal de publicaciones por ano y revista) Tj ET
 0.800 0.800 0.800 RG
 1.00 w
 80.00 80.00 682.00 435.00 re S
@@ -462,13 +462,13 @@ xref
 0000000058 00000 n 
 0000000127 00000 n 
 0000000197 00000 n 
-0000002863 00000 n 
-0000002995 00000 n 
-0000012745 00000 n 
-0000012877 00000 n 
-0000015279 00000 n 
+0000002849 00000 n 
+0000002981 00000 n 
+0000012731 00000 n 
+0000012863 00000 n 
+0000015263 00000 n 
 trailer
 << /Size 10 /Root 1 0 R >>
 startxref
-15411
+15395
 %%EOF

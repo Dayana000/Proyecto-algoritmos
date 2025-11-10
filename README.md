@@ -7,6 +7,8 @@ Este proyecto permite descargar artículos académicos de tres bases de datos pr
 - **Scraping automatizado** de tres bases de datos académicas
 - **Unificación de datos** en formato BibTeX estándar
 - **Detección de duplicados** basada en títulos de artículos
+- **Similitud textual** sobre abstracts con 4 algoritmos clásicos y 2 basados en IA
+- **Frecuencia de conceptos** y detección de nuevas palabras asociadas
 - **Análisis de grafos de citaciones** con algoritmos de caminos mínimos
 - **Análisis de grafos de coocurrencia** de términos
 - **Visualización interactiva** de redes y componentes
@@ -74,7 +76,7 @@ python Scraping/Sage.py
 python Unificador_duplicador/Categorizacion.py
 ```
 
-### Análisis de grafos
+### Análisis y visualizaciones
 ```bash
 # Análisis completo de grafos (citaciones y coocurrencia)
 python graph_analysis_main.py
@@ -88,6 +90,12 @@ python Graph_Analysis/cooccurrence_graph.py
 # Visualizaciones
 python Graph_Analysis/visualization.py
 
+# Similitud textual (Req. 2)
+python req2/req2.py
+
+# Frecuencia de conceptos (Req. 3)
+python req3/req3.py
+
 # Clustering jerárquico (Req. 4)
 python req4/req4.py --entrada Data/unificados.bib --salida Data/visualizations/req4
 # Genera dendrogramas en HTML (single, complete, average) y un resumen JSON
@@ -100,7 +108,7 @@ python req5/generate_visualizations.py --entrada Data/unificados.bib --salida Da
 ```bash
 python menu_requerimientos.py
 ```
-- Permite elegir ejecutar el requerimiento 4 o 5 y, opcionalmente, limitar la cantidad de artículos a procesar.
+- Permite ejecutar los requerimientos 2, 3, 4 o 5 y, opcionalmente, limitar la cantidad de artículos a procesar en los dos últimos.
 ```
 
 ## 📁 Estructura del Proyecto
@@ -174,6 +182,12 @@ crea el archivo `Data/author_locations_override.json`, por ejemplo:
 ```
 
 Los nombres se comparan en minúsculas y con espacios/puntuación simples.
+
+### Dependencias adicionales (Req. 2 y Req. 3)
+
+Los algoritmos clásicos y el cálculo de frecuencias se implementan con utilidades propias, sin librerías externas.  
+Para habilitar los dos algoritmos de IA (Req. 2) se recomienda instalar `sentence-transformers`
+—el script los cargará de forma diferida y, si no están disponibles, mostrará un aviso y omitirá esas métricas.
 
 ### Términos de Búsqueda
 

@@ -12,7 +12,6 @@ Autor: Proyecto Algoritmos UQ
 """
 
 import networkx as nx
-import numpy as np
 from collections import defaultdict
 import re
 import math
@@ -245,12 +244,15 @@ class CitationGraph:
         }
         
         if self.graph.number_of_edges() > 0:
-            in_degrees = [d for n, d in self.graph.in_degree()]
-            out_degrees = [d for n, d in self.graph.out_degree()]
-            
+            in_degrees = [d for _, d in self.graph.in_degree()]
+            out_degrees = [d for _, d in self.graph.out_degree()]
+
+            def _safe_mean(values):
+                return sum(values) / len(values) if values else 0.0
+
             stats.update({
-                'average_in_degree': np.mean(in_degrees),
-                'average_out_degree': np.mean(out_degrees),
+                'average_in_degree': _safe_mean(in_degrees),
+                'average_out_degree': _safe_mean(out_degrees),
                 'max_in_degree': max(in_degrees),
                 'max_out_degree': max(out_degrees)
             })

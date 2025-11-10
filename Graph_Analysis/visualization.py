@@ -14,7 +14,6 @@ Autor: Proyecto Algoritmos UQ
 import networkx as nx
 import matplotlib.pyplot as plt
 import seaborn as sns
-import numpy as np
 from typing import Dict, List, Tuple, Optional
 import json
 import os
@@ -63,7 +62,9 @@ class GraphVisualizer:
                               arrowsize=20, arrowstyle='->')
         
         # Dibujar etiquetas (solo para nodos importantes)
-        important_nodes = [node for node in G.nodes() if G.degree(node) > np.mean(list(dict(G.degree()).values()))]
+        degrees = list(dict(G.degree()).values())
+        threshold = (sum(degrees) / len(degrees)) if degrees else 0
+        important_nodes = [node for node in G.nodes() if G.degree(node) > threshold]
         labels = {node: node[:10] + '...' if len(node) > 10 else node 
                  for node in important_nodes}
         nx.draw_networkx_labels(G, pos, labels, font_size=8)
@@ -113,7 +114,9 @@ class GraphVisualizer:
         nx.draw_networkx_edges(G, pos, alpha=0.6, edge_color='gray', width=0.5)
         
         # Dibujar etiquetas (solo para términos importantes)
-        important_nodes = [node for node in G.nodes() if G.degree(node) > np.mean(list(dict(G.degree()).values()))]
+        degrees = list(dict(G.degree()).values())
+        threshold = (sum(degrees) / len(degrees)) if degrees else 0
+        important_nodes = [node for node in G.nodes() if G.degree(node) > threshold]
         labels = {node: node for node in important_nodes}
         nx.draw_networkx_labels(G, pos, labels, font_size=8)
         

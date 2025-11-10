@@ -71,7 +71,7 @@ la clave "abstract" que contenga el texto del abstract de cada artículo.
 
 import re
 from collections import Counter
-from sklearn.feature_extraction.text import TfidfVectorizer
+from math import log
 
 # Palabras asociadas a la categoría "Concepts of Generative AI in Education"
 # Estas son las palabras clave definidas en el requerimiento que se deben buscar en los abstracts
@@ -81,6 +81,20 @@ PALABRAS_ASOCIADAS = [
     "transparency", "ethics", "privacy", "personalization",
     "human-ai interaction", "ai literacy", "co-creation"
 ]
+
+STOPWORDS_EN = {
+    "a", "an", "and", "the", "is", "are", "was", "were", "be", "been", "being",
+    "to", "of", "in", "for", "on", "with", "as", "by", "at", "from", "up", "down",
+    "out", "about", "into", "over", "after", "before", "between", "but", "if",
+    "because", "while", "do", "does", "did", "doing", "this", "that", "these",
+    "those", "he", "she", "it", "they", "them", "his", "her", "their", "our", "we",
+    "you", "your", "i", "me", "my", "mine", "ours", "yours", "hers", "him",
+    "himself", "herself", "yourself", "themselves", "itself", "what", "which",
+    "who", "whom", "where", "when", "why", "how", "all", "any", "both", "each",
+    "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only",
+    "own", "same", "so", "than", "too", "very", "can", "will", "just", "don",
+    "should", "now"
+}
 
 def limpiar_texto(texto):
     """
@@ -99,6 +113,44 @@ def limpiar_texto(texto):
     # Normalizar espacios múltiples a un solo espacio
     texto = re.sub(r"\s+", " ", texto)
     return texto.strip()
+
+
+def _tokenizar(texto: str) -> list[str]:
+    return [
+        token for token in limpiar_texto(texto).split()
+        if token and token not in STOPWORDS_EN and len(token) > 2
+    ]
+
+
+def _tfidf_promedio(token_lists: list[list[str]]) -> dict[str, float]:
+    """
+    Calcula un score promedio TF-IDF para cada término dado un corpus tokenizado.
+    """
+    if not token_lists:
+        return {}
+
+    documentos = len(token_lists)
+    df = Counter()
+    for tokens in token_lists:
+        df.update(set(tokens))
+
+    idf = {
+        palabra: log((documentos + 1) / (df[palabra] + 1)) + 1.0
+        for palabra in df.keys()
+    }
+
+    importancia: dict[str, float] = Counter()
+    for tokens in token_lists:
+        conteo = Counter(tokens)
+        longitud = len(tokens) or 1
+        for palabra, frecuencia in conteo.items():
+            tf = frecuencia / longitud
+            importancia[palabra] += tf * idf.get(palabra, 1.0)
+
+    for palabra in list(importancia.keys()):
+        importancia[palabra] /= documentos
+
+    return dict(importancia)
 
 def frecuencia_palabras_asociadas(articulos):
     """
@@ -188,31 +240,20 @@ def nuevas_palabras_relevantes(articulos, limite=15):
               Ejemplo: [("neural", 0.234), ("deep", 0.189), ("network", 0.156), ...]
               Cada tupla contiene: (palabra, score_tfidf) donde score_tfidf es un float
     """
-    # Crear corpus de abstracts limpios
-    corpus = [limpiar_texto(a.get("abstract", "")) for a in articulos]
+    token_lists = [_tokenizar(a.get("abstract", "")) for a in articulos]
+    importancia_promedio = _tfidf_promedio(token_lists)
 
-    # Crear vectorizador TF-IDF
-    # stop_words="english": elimina palabras comunes en inglés (the, a, an, etc.)
-    # max_features=2000: limita a las 2000 palabras más frecuentes para eficiencia
-    vectorizer = TfidfVectorizer(stop_words="english", max_features=2000)
-    # Calcular matriz TF-IDF: cada fila es un artículo, cada columna es una palabra
-    matriz = vectorizer.fit_transform(corpus)
+    if not importancia_promedio:
+        return []
 
-    # Calcular importancia promedio de cada palabra (promedio de TF-IDF en todos los artículos)
-    importancia_promedio = matriz.mean(axis=0).A1
-    # Obtener nombres de las palabras (features)
-    palabras = vectorizer.get_feature_names_out()
+    asociadas = set(pal.lower() for pal in PALABRAS_ASOCIADAS)
+    ranking = [
+        (palabra, score)
+        for palabra, score in importancia_promedio.items()
+        if palabra not in asociadas
+    ]
 
-    # Crear ranking: (palabra, score_tfidf)
-    ranking = list(zip(palabras, importancia_promedio))
-
-    # Filtrar: excluir palabras que ya están en PALABRAS_ASOCIADAS
-    asociadas = set(p.lower() for p in PALABRAS_ASOCIADAS)
-    ranking = [(p, s) for p, s in ranking if p not in asociadas]
-
-    # Ordenar por score descendente (palabras más relevantes primero)
     ranking.sort(key=lambda x: x[1], reverse=True)
-    # Retornar solo las top N palabras (máximo 15)
     return ranking[:limite]
 
 def medir_precision(nuevas_palabras):

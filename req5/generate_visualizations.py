@@ -20,6 +20,7 @@ import os
 import random
 import re
 import sys
+import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Tuple
@@ -98,6 +99,13 @@ class SimplePDF:
         r, g, b = color
         self._append(f"{r:.3f} {g:.3f} {b:.3f} RG")
 
+    def _normalize_text(self, text: str) -> str:
+        normalized = unicodedata.normalize("NFKD", text or "")
+        stripped = "".join(ch for ch in normalized if not unicodedata.combining(ch))
+        stripped = stripped.replace("\r", " ").replace("\n", " ")
+        ascii_text = "".join(ch if 32 <= ord(ch) <= 126 else " " for ch in stripped)
+        return ascii_text
+
     def add_text(
         self,
         x: float,
@@ -107,11 +115,11 @@ class SimplePDF:
         color: Tuple[float, float, float] = (0, 0, 0),
     ) -> None:
         self.set_fill_color(color)
+        clean = self._normalize_text(text)
         escaped = (
-            text.replace("\\", "\\\\")
+            clean.replace("\\", "\\\\")
             .replace("(", "\\(")
             .replace(")", "\\)")
-            .replace("\n", " ")
         )
         self._append(f"BT /F1 {size:.2f} Tf 1 0 0 1 {x:.2f} {y:.2f} Tm ({escaped}) Tj ET")
 

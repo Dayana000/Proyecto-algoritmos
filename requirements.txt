@@ -1,7 +1,8 @@
-playwright==1.40.0
+# Compatibles y verificados con Python 3.13.5
+playwright==1.55.0
 python-dotenv==1.0.0
 networkx==3.2.1
-numpy==1.24.3
 nltk==3.8.1
-matplotlib==3.7.2
-seaborn==0.12.2
+matplotlib==3.9.2
+seaborn==0.13.2
+sentence-transformers==3.1.0
