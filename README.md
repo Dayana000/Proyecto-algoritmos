@@ -241,6 +241,7 @@ El script principal genera un reporte con:
 Este proyecto incluye un documento de transparencia sobre el uso de herramientas de Inteligencia Artificial durante su desarrollo. Puedes consultarlo en:
 
 - `docs/AI_Declaration.md`
+- `docs/IA_Fundamentacion.md`
 
 
 ## 🤝 Contribuciones

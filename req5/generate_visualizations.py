@@ -371,6 +371,7 @@ def interpolate_color(value: float) -> Tuple[float, float, float]:
 def draw_geographical_heatmap(
     pdf: SimplePDF,
     country_points: List[Dict[str, float]],
+    unknown_total: int = 0,
 ) -> None:
     pdf.add_page()
     pdf.add_text(40, PAGE_HEIGHT - 40, "Mapa de calor geográfico por país (primer autor)", size=18)
@@ -395,34 +396,77 @@ def draw_geographical_heatmap(
         pdf.add_text(x - 15, map_bottom - 25, f"{lon}°", size=9)
 
     if not country_points:
-        pdf.add_text(map_left + map_width / 2 - 120, map_bottom + map_height / 2, "Sin datos geográficos suficientes.", size=14)
+        pdf.add_text(
+            map_left + map_width / 2 - 140,
+            map_bottom + map_height / 2,
+            "Sin datos geográficos suficientes.",
+            size=14,
+        )
+        if unknown_total:
+            pdf.add_text(
+                map_left + map_width / 2 - 110,
+                map_bottom + map_height / 2 - 30,
+                f"Registros sin país: {unknown_total}",
+                size=11,
+                color=(0.45, 0.45, 0.45),
+            )
         return
 
     max_count = max(point["count"] for point in country_points)
 
-    for point in country_points:
+    for point in sorted(country_points, key=lambda item: item["count"]):
         lon = point["lon"]
         lat = point["lat"]
         count = point["count"]
         x = map_left + ((lon + 180) / 360) * map_width
         y = map_bottom + ((lat + 90) / 180) * map_height
         intensity = count / max_count
-        size = 8 + 18 * math.sqrt(intensity)
+        size = 12 + 28 * math.sqrt(intensity)
         color = interpolate_color(intensity)
-        pdf.draw_rect(x - size / 2, y - size / 2, size, size, fill_color=color, stroke_color=(0.6, 0.6, 0.6), stroke_width=0.5)
-
-    top_countries = sorted(country_points, key=lambda item: item["count"], reverse=True)[:3]
-    for point in top_countries:
-        lon = point["lon"]
-        lat = point["lat"]
-        x = map_left + ((lon + 180) / 360) * map_width
-        y = map_bottom + ((lat + 90) / 180) * map_height
+        pdf.draw_rect(
+            x - size / 2,
+            y - size / 2,
+            size,
+            size,
+            fill_color=color,
+            stroke_color=(0.35, 0.35, 0.35),
+            stroke_width=0.6,
+        )
+        label_x = x + size / 2 + 6
+        label_y = y + 2
+        pdf.draw_line(x, y, x + size / 2 + 2, y + 3, color=(0.4, 0.4, 0.4), width=0.5)
         pdf.add_text(
-            x + 6,
-            y + 10,
+            label_x,
+            label_y,
             f"{point['name']} ({point['count']})",
             size=10,
-            color=(0.15, 0.15, 0.15),
+            color=(0.12, 0.12, 0.12),
+        )
+
+    legend_x = map_left + map_width - 120
+    legend_y = map_bottom + 20
+    pdf.add_text(legend_x, legend_y + 90, "Escala (artículos)", size=10)
+    for idx, frac in enumerate([0.2, 0.4, 0.6, 0.8, 1.0]):
+        color = interpolate_color(frac)
+        pdf.draw_rect(
+            legend_x,
+            legend_y + idx * 16,
+            14,
+            14,
+            fill_color=color,
+            stroke_color=(0.4, 0.4, 0.4),
+            stroke_width=0.4,
+        )
+        valor = max(1, round(frac * max_count))
+        pdf.add_text(legend_x + 20, legend_y + idx * 16 + 2, f"{valor}", size=9)
+
+    if unknown_total:
+        pdf.add_text(
+            map_left,
+            map_bottom - 25,
+            f"Registros sin país: {unknown_total}",
+            size=10,
+            color=(0.4, 0.4, 0.4),
         )
 
 
@@ -463,13 +507,15 @@ def draw_publication_timeline(
 ) -> None:
     pdf.add_page()
     pdf.add_text(40, PAGE_HEIGHT - 40, "Línea temporal de publicaciones por año y revista", size=18)
+    pdf.add_text(40, PAGE_HEIGHT - 60, "Top revistas según volumen acumulado", size=10, color=(0.3, 0.3, 0.3))
 
     chart_left = 80
-    chart_bottom = 80
-    chart_width = PAGE_WIDTH - 160
-    chart_height = PAGE_HEIGHT - 160
+    chart_bottom = 90
+    chart_width = PAGE_WIDTH - 180
+    chart_height = PAGE_HEIGHT - 180
 
-    pdf.draw_rect(chart_left, chart_bottom, chart_width, chart_height, stroke_color=(0.8, 0.8, 0.8))
+    pdf.draw_rect(chart_left, chart_bottom, chart_width, chart_height, stroke_color=(0.75, 0.75, 0.75))
+    pdf.draw_rect(chart_left, chart_bottom, chart_width, chart_height, stroke_color=(0.45, 0.45, 0.45), stroke_width=1.2)
 
     if not timeline_data:
         pdf.add_text(chart_left + chart_width / 2 - 100, chart_bottom + chart_height / 2, "Sin datos temporales disponibles.", size=14)
@@ -487,36 +533,42 @@ def draw_publication_timeline(
         return
 
     min_year, max_year = min(all_years), max(all_years)
-    year_span = max_year - min_year or 1
+    year_span = max(max_year - min_year, 1)
 
-    max_count = max(sum(data.values()) for _, data in journal_totals) or 1
+    max_count = max((max(data.values()) if data else 0) for _, data in journal_totals)
+    max_count = max(max_count, 1)
+
     color_palette = [
         (0.86, 0.21, 0.25),
         (0.12, 0.47, 0.71),
         (0.17, 0.63, 0.17),
         (0.58, 0.40, 0.74),
         (0.89, 0.47, 0.20),
+        (0.49, 0.29, 0.75),
+        (0.30, 0.68, 0.53),
     ]
 
-    # Ejes y ticks
+    # Grilla vertical por año
     for year in all_years:
         x = chart_left + ((year - min_year) / year_span) * chart_width
-        pdf.draw_line(x, chart_bottom, x, chart_bottom - 6, color=(0, 0, 0))
-        pdf.add_text(x - 10, chart_bottom - 20, str(year), size=9)
+        pdf.draw_line(x, chart_bottom, x, chart_bottom + chart_height, color=(0.90, 0.90, 0.90))
+        pdf.draw_line(x, chart_bottom, x, chart_bottom - 6, color=(0.15, 0.15, 0.15))
+        pdf.add_text(x - 12, chart_bottom - 24, str(year), size=9)
 
-    max_y_tick = max(
-        max(data.values()) if data else 0
-        for _, data in journal_totals
-    )
-    max_y_tick = max(max_y_tick, 1)
+    # Grilla horizontal dinámica
+    lines = 6
+    step = max(1, math.ceil(max_count / lines))
+    y_value = 0
+    while y_value <= max_count:
+        y = chart_bottom + (y_value / max_count) * chart_height
+        pdf.draw_line(chart_left, y, chart_left + chart_width, y, color=(0.90, 0.90, 0.90))
+        pdf.draw_line(chart_left - 6, y, chart_left, y, color=(0.15, 0.15, 0.15))
+        pdf.add_text(chart_left - 36, y - 4, str(y_value), size=9)
+        y_value += step
 
-    for tick in range(0, max_y_tick + 1):
-        y = chart_bottom + (tick / max_y_tick) * chart_height if max_y_tick else chart_bottom
-        pdf.draw_line(chart_left - 6, y, chart_left, y, color=(0, 0, 0))
-        pdf.add_text(chart_left - 40, y - 4, str(tick), size=9)
-
-    legend_x = chart_left + chart_width + 10
-    legend_y = chart_bottom + chart_height
+    legend_x = chart_left + chart_width - 150
+    legend_y = chart_bottom + chart_height - 10
+    pdf.add_text(chart_left, chart_bottom + chart_height + 12, "Revistas seleccionadas", size=10, color=(0.35, 0.35, 0.35))
 
     for idx, (journal, year_counts) in enumerate(journal_totals):
         color = color_palette[idx % len(color_palette)]
@@ -525,15 +577,15 @@ def draw_publication_timeline(
         for year in sorted_years:
             count = year_counts[year]
             x = chart_left + ((year - min_year) / year_span) * chart_width
-            y = chart_bottom + (count / max_y_tick) * chart_height if max_y_tick else chart_bottom
+            y = chart_bottom + (count / max_count) * chart_height
             if previous_point:
-                pdf.draw_line(previous_point[0], previous_point[1], x, y, color=color, width=1.5)
-            pdf.draw_rect(x - 2, y - 2, 4, 4, fill_color=color, stroke_color=color)
+                pdf.draw_line(previous_point[0], previous_point[1], x, y, color=color, width=2.0)
+            pdf.draw_rect(x - 3, y - 3, 6, 6, fill_color=color, stroke_color=color)
             previous_point = (x, y)
 
         pdf.draw_rect(legend_x, legend_y - 10, 10, 10, fill_color=color, stroke_color=color)
         pdf.add_text(legend_x + 14, legend_y - 8, f"{journal} ({sum(year_counts.values())})", size=9)
-        legend_y -= 18
+        legend_y -= 16
 
 
 def main() -> None:
@@ -628,7 +680,9 @@ def main() -> None:
         )
 
     pdf = SimplePDF()
-    draw_geographical_heatmap(pdf, points_for_map)
+    unknown_total = country_counts.get("Desconocido", 0)
+
+    draw_geographical_heatmap(pdf, points_for_map, unknown_total)
     draw_word_cloud(pdf, word_counter)
     draw_publication_timeline(pdf, timeline)
 

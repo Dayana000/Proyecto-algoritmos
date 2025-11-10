@@ -33,5 +33,20 @@
     "name": "India",
     "lat": 20.0,
     "lon": 77.0
+  },
+  "LC": {
+    "name": "Santa Lucía",
+    "lat": 13.88333333,
+    "lon": -60.96666666
+  },
+  "IR": {
+    "name": "Iran",
+    "lat": 32.0,
+    "lon": 53.0
+  },
+  "TW": {
+    "name": "Taiwán",
+    "lat": 23.5,
+    "lon": 121.0
   }
 }
