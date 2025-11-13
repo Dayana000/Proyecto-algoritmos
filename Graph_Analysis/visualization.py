@@ -19,17 +19,17 @@ import json
 import os
 
 class GraphVisualizer:
-    """Clase para visualizar grafos de citaciones y coocurrencia."""
+    """Proporciona utilidades para renderizar grafos de citaciones y coocurrencia con Matplotlib."""
     
     def __init__(self):
-        """Inicializar el visualizador."""
+        """Configura la paleta base y estilos reutilizados en las visualizaciones."""
         plt.style.use('seaborn-v0_8')
         self.colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', 
                       '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
     
     def visualize_citation_graph(self, citation_graph, max_nodes: int = 100, 
                                 save_path: str = "Data/citation_graph_visualization.png"):
-        """Visualizar grafo de citaciones."""
+        """Genera una representación 2D del grafo de citaciones, priorizando nodos más conectados."""
         print("🎨 Generando visualización del grafo de citaciones...")
         
         # Crear subgrafo si el grafo es muy grande
@@ -82,7 +82,7 @@ class GraphVisualizer:
     
     def visualize_cooccurrence_graph(self, cooccurrence_graph, max_nodes: int = 100,
                                    save_path: str = "Data/cooccurrence_graph_visualization.png"):
-        """Visualizar grafo de coocurrencia."""
+        """Crea una imagen del grafo de coocurrencia destacando términos con mayor conectividad."""
         print("🎨 Generando visualización del grafo de coocurrencia...")
         
         # Crear subgrafo si el grafo es muy grande
@@ -120,11 +120,10 @@ class GraphVisualizer:
         labels = {node: node for node in important_nodes}
         nx.draw_networkx_labels(G, pos, labels, font_size=8)
         
-        plt.title("Grafo de Coocurrencia de Términos\n(Tamaño del nodo = grado de conexión)", 
+        plt.title("Grafo de Coocurrencia\n(Tamaño del nodo = grado de conexión)", 
                  fontsize=16, fontweight='bold')
         plt.axis('off')
         
-        # Guardar visualización
         plt.tight_layout()
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
         plt.show()
@@ -257,8 +256,8 @@ class GraphVisualizer:
         plt.show()
     
     def generate_comprehensive_visualization(self, citation_graph=None, cooccurrence_graph=None):
-        """Generar visualización comprensiva de ambos grafos."""
-        print("🎨 Generando visualizaciones comprensivas...")
+        """Crea un conjunto de figuras complementarias (grados, componentes, distribuciones)."""
+        print("🖼️ Generando visualizaciones completas...")
         
         # Crear directorio para visualizaciones
         os.makedirs("Data/visualizations", exist_ok=True)
@@ -321,7 +320,7 @@ class GraphVisualizer:
         print("✅ Visualizaciones completadas")
 
 def main():
-    """Función principal para probar las visualizaciones."""
+    """Punto de entrada CLI que carga los JSON disponibles y genera todas las figuras."""
     print("🎨 Iniciando sistema de visualización...")
     
     # Cargar grafos existentes

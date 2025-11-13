@@ -14,15 +14,15 @@ from collections import defaultdict, Counter
 from typing import Dict, List, Tuple, Set, Optional
 
 class SimpleCooccurrenceGraph:
-    """Clase simplificada para manejar el grafo de coocurrencia de términos."""
+    """Versión minimalista del grafo de coocurrencia usando solo estructuras básicas de Python."""
     
     def __init__(self, min_frequency: int = 2, min_cooccurrence: int = 1):
-        """Inicializar el grafo de coocurrencia."""
-        self.graph = defaultdict(list)  # Lista de adyacencia
-        self.weights = defaultdict(dict)  # Pesos de las aristas
-        self.term_frequencies = Counter()
-        self.cooccurrence_matrix = defaultdict(int)
-        self.articles = {}
+        """Inicializa contenedores en formato lista de adyacencia y contadores simples."""
+        self.graph: Dict[str, List[str]] = defaultdict(list)  # Lista de adyacencia
+        self.weights: Dict[str, Dict[str, float]] = defaultdict(dict)  # Pesos de las aristas
+        self.term_frequencies: Counter[str] = Counter()
+        self.cooccurrence_matrix: Dict[Tuple[str, str], int] = defaultdict(int)
+        self.articles: Dict[str, Dict[str, str]] = {}
         self.min_frequency = min_frequency
         self.min_cooccurrence = min_cooccurrence
         
@@ -123,7 +123,7 @@ class SimpleCooccurrenceGraph:
         return terms
     
     def build_cooccurrence_matrix(self):
-        """Construir matriz de coocurrencia de términos."""
+        """Construye la matriz de coocurrencia term-term con operaciones básicas de conjuntos."""
         print("🔗 Construyendo matriz de coocurrencia...")
         
         # Primero, extraer todos los términos y contar frecuencias
@@ -161,7 +161,7 @@ class SimpleCooccurrenceGraph:
         return len(filtered_terms)
     
     def build_cooccurrence_graph(self):
-        """Construir el grafo de coocurrencia."""
+        """Proyecta la matriz simplificada sobre estructuras de listas y pesos simétricos."""
         print("🕸️  Construyendo grafo de coocurrencia...")
         
         # Limpiar grafo existente
@@ -196,18 +196,18 @@ class SimpleCooccurrenceGraph:
         return edges_added
     
     def get_node_degrees(self) -> Dict[str, int]:
-        """Obtener grado de cada nodo."""
+        """Devuelve el número de conexiones directas de cada término."""
         degrees = {term: len(neighbors) for term, neighbors in self.graph.items()}
         return degrees
     
     def get_top_connected_terms(self, top_n: int = 20) -> List[Tuple[str, int]]:
-        """Obtener los términos más conectados."""
+        """Lista los términos con mayor grado en orden descendente."""
         degrees = self.get_node_degrees()
-        sorted_degrees = sorted(degrees.items(), key=lambda x: x[1], reverse=True)
-        return sorted_degrees[:top_n]
+        sorted_terms = sorted(degrees.items(), key=lambda x: x[1], reverse=True)
+        return sorted_terms[:top_n]
     
     def find_connected_components(self) -> List[List[str]]:
-        """Encontrar componentes conexas del grafo usando DFS."""
+        """Detecta componentes conexas mediante búsqueda en anchura (BFS)."""
         print("🔍 Buscando componentes conexas...")
         
         visited = set()

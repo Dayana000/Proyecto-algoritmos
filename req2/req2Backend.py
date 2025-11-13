@@ -129,12 +129,15 @@ def limpiar(texto):
 
 
 def _tokenizar(texto: str) -> List[str]:
+    """Tokeniza un texto en palabras limpias usando la rutina de normalización principal."""
     return [palabra for palabra in limpiar(texto).split() if palabra]
 
 
 def _tfidf_matrix(token_lists: List[List[str]]) -> List[List[float]]:
     """
     Devuelve la matriz TF-IDF (lista de listas) utilizando un esquema simple sin dependencias externas.
+    Cada documento se transforma en un vector de longitud igual al vocabulario total; cada posición
+    representa el peso TF-IDF de la palabra correspondiente.
     """
     if not token_lists:
         return []
@@ -401,18 +404,17 @@ def similitud_coseno_tfidf(a, b):
     - Efectivo para textos de diferentes tamaños
     
     Resultado: Valor entre 0 y 1
-    - 0 = textos ortogonales (sin palabras comunes relevantes)
-    - 1 = textos idénticos en términos de palabras importantes
+    - 0 = textos ortogonales (sin vocabulario relevante en común)
+    - 1 = textos idénticos en dirección (mismos términos ponderados)
     
-    Complejidad: O(n * m) donde n es el número de palabras únicas y m es
-    el número de palabras en los textos.
+    Complejidad: O(n) tras vectorizar, donde n es el número de dimensiones (términos)
     
     Args:
         a (str): Primer texto
         b (str): Segundo texto
         
     Returns:
-        float: Similitud del coseno TF-IDF entre 0 y 1
+        float: Similitud del coseno entre 0 y 1
     """
     tokens_a = _tokenizar(a)
     tokens_b = _tokenizar(b)
@@ -433,131 +435,43 @@ def similitud_coseno_tfidf(a, b):
 # -----------------------------------------------------------
 # 5) IA EMBEDDINGS (SBERT - Sentence-BERT)
 # -----------------------------------------------------------
-def similitud_embeddings(a, b):
-    """
-    Calcula la similitud usando embeddings de IA (Sentence-BERT).
-    
-    EXPLICACIÓN MATEMÁTICA Y ALGORÍTMICA:
-    -------------------------------------
-    Sentence-BERT (SBERT) es un modelo de IA que genera representaciones
-    vectoriales densas (embeddings) de oraciones completas.
-    
-    Proceso del modelo:
-    1. El texto se pasa por una red neuronal transformer (BERT)
-    2. La red genera un vector de alta dimensionalidad (embedding)
-    3. Este vector captura el significado semántico del texto
-    
-    Fórmula de similitud:
-    Se usa similitud del coseno entre los embeddings:
-    sim(A, B) = cos(θ) = (emb_A · emb_B) / (||emb_A|| * ||emb_B||)
-    
-    Algoritmo paso a paso:
-    1. Codificar texto A en un embedding usando el modelo SBERT
-       - El modelo procesa el texto con atención transformer
-       - Genera un vector de 384 dimensiones (para all-MiniLM-L6-v2)
-    2. Codificar texto B de la misma manera
-    3. Calcular similitud del coseno entre los dos embeddings
-    
-    Ventajas sobre métodos clásicos:
-    - Captura significado semántico, no solo palabras
-    - Entiende sinónimos y contexto
-    - Funciona bien con textos de diferentes longitudes
-    - Considera el orden y la estructura de las palabras
-    
-    Modelo usado: all-MiniLM-L6-v2
-    - Basado en BERT
-    - Optimizado para velocidad y eficiencia
-    - Genera embeddings de 384 dimensiones
-    
-    Complejidad: O(n) donde n es la longitud del texto (procesamiento del modelo).
-    
-    Args:
-        a (str): Primer texto
-        b (str): Segundo texto
-        
-    Returns:
-        float: Similitud del coseno entre embeddings (0-1)
-    """
+def similitud_embeddings(texto1: str, texto2: str) -> float:
+    """Obtiene similitud coseno sobre embeddings SBERT si están instalados."""
     if not HAS_SENTENCE_TRANSFORMERS:
-        return None
+        return 0.0
 
     _ensure_sbert_models()
 
-    emb1 = _MODELO_EMBEDDINGS_SBERT.encode(a, convert_to_tensor=True)
-    emb2 = _MODELO_EMBEDDINGS_SBERT.encode(b, convert_to_tensor=True)
+    emb1 = _MODELO_EMBEDDINGS_SBERT.encode(texto1, convert_to_tensor=True)
+    emb2 = _MODELO_EMBEDDINGS_SBERT.encode(texto2, convert_to_tensor=True)
 
     return float(util.cos_sim(emb1, emb2))
 
 # -----------------------------------------------------------
 # 6) IA EMBEDDINGS ALTERNATIVO (Modelo Paraphrase)
 # -----------------------------------------------------------
-def similitud_embeddings_alternativo(a, b):
-    """
-    Calcula la similitud usando un segundo modelo de IA (Paraphrase-MiniLM).
-    
-    EXPLICACIÓN MATEMÁTICA Y ALGORÍTMICA:
-    -------------------------------------
-    Este es un segundo modelo de IA para comparar resultados con el primero.
-    Usa un modelo diferente entrenado específicamente para detectar paráfrasis.
-    
-    Modelo usado: paraphrase-MiniLM-L6-v2
-    - Entrenado específicamente para detectar similitud semántica
-    - Optimizado para tareas de paráfrasis y similitud de significado
-    - Genera embeddings de 384 dimensiones
-    
-    El proceso es similar a similitud_embeddings pero con un modelo diferente:
-    1. Codificar texto A con el modelo paraphrase
-    2. Codificar texto B con el mismo modelo
-    3. Calcular similitud del coseno
-    
-    Ventajas del modelo paraphrase:
-    - Mejor para detectar textos con el mismo significado pero diferentes palabras
-    - Entrenado específicamente para similitud semántica
-    - Puede dar resultados diferentes al modelo SBERT estándar
-    
-    Complejidad: O(n) donde n es la longitud del texto.
-    
-    Args:
-        a (str): Primer texto
-        b (str): Segundo texto
-        
-    Returns:
-        float: Similitud del coseno entre embeddings (0-1)
-    """
+def similitud_embeddings_alternativo(texto1: str, texto2: str) -> float:
+    """Versión alternativa de similitud con un segundo modelo de embeddings."""
     if not HAS_SENTENCE_TRANSFORMERS:
-        return None
+        return 0.0
 
     _ensure_sbert_models()
 
-    emb1 = _MODELO_EMBEDDINGS_ALTERNATIVO.encode(a, convert_to_tensor=True)
-    emb2 = _MODELO_EMBEDDINGS_ALTERNATIVO.encode(b, convert_to_tensor=True)
+    emb1 = _MODELO_EMBEDDINGS_ALTERNATIVO.encode(texto1, convert_to_tensor=True)
+    emb2 = _MODELO_EMBEDDINGS_ALTERNATIVO.encode(texto2, convert_to_tensor=True)
 
     return float(util.cos_sim(emb1, emb2))
 
 # -----------------------------------------------------------
 # FUNCIÓN PRINCIPAL USADA POR EL MENÚ
 # -----------------------------------------------------------
-def analizar_similitud(texto1, texto2):
+def analizar_similitud(texto1: str, texto2: str) -> Dict[str, float]:
     """
-    Analiza la similitud entre dos textos usando todos los algoritmos implementados.
-    
-    Esta función ejecuta:
-    - 4 algoritmos clásicos: Levenshtein, Jaccard, Dice, Coseno TF-IDF
-    - 2 algoritmos de IA: SBERT y Paraphrase-MiniLM
-    
-    Args:
-        texto1 (str): Primer texto (abstract del primer artículo)
-        texto2 (str): Segundo texto (abstract del segundo artículo)
-        
+    Calcula todas las métricas de similitud entre dos textos.
+ 
+    Devuelve un diccionario con resultados homogéneos que las capas superiores pueden presentar.
     Returns:
-        dict: Resultados de todos los algoritmos:
-            - "levenshtein": int (distancia, menor es más similar)
-            - "jaccard": float (0-1, mayor es más similar)
-            - "dice": float (0-1, mayor es más similar)
-            - "coseno_tfidf": float (0-1, mayor es más similar)
-            - "ia_embeddings": float | None (SBERT; None si no disponible)
-            - "ia_embeddings_alt": float | None (modelo alternativo; None si no disponible)
-            - "ia_modelos_disponibles": bool (True si se cargaron correctamente)
+        dict: Resultados con todas las métricas calculadas
     """
     # Ejecutar todos los algoritmos y retornar resultados en un diccionario
     ia_principal = similitud_embeddings(texto1, texto2)

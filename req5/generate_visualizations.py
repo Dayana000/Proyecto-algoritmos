@@ -224,6 +224,7 @@ def save_json(path: Path, data: Dict[str, str]) -> None:
 
 
 def parse_bibtex(file_path: Path) -> List[Dict[str, str]]:
+    """Lee un archivo BibTeX y devuelve una lista de diccionarios llave-valor."""
     articles: List[Dict[str, str]] = []
     if not file_path.exists():
         raise FileNotFoundError(f"No se encontró el archivo BibTeX: {file_path}")
@@ -251,6 +252,7 @@ def parse_bibtex(file_path: Path) -> List[Dict[str, str]]:
 
 
 def extract_first_author(author_field: str) -> Optional[str]:
+    """Obtiene el primer autor listado en un campo BibTeX que separa autores con 'and'."""
     if not author_field:
         return None
     normalized = author_field.replace(" and ", ";")
@@ -259,6 +261,7 @@ def extract_first_author(author_field: str) -> Optional[str]:
 
 
 def sanitize_first_name(author_name: str) -> Optional[str]:
+    """Reduce el nombre completo del autor al primer componente para consultas heurísticas."""
     if not author_name:
         return None
     first_part = re.split(r"[,\s\-]+", author_name.strip())[0]
@@ -267,6 +270,7 @@ def sanitize_first_name(author_name: str) -> Optional[str]:
 
 
 def fetch_json(url: str, params: Optional[Dict[str, str]] = None) -> Optional[Dict]:
+    """Pequeño cliente HTTP para consumir servicios REST (nationalize.io, restcountries)."""
     try:
         if params:
             url = f"{url}?{parse.urlencode(params)}"
@@ -320,6 +324,7 @@ def resolve_country_info(
     author_cache: Dict[str, str],
     country_cache: Dict[str, Dict[str, str]],
 ) -> Tuple[str, Optional[float], Optional[float]]:
+    """Determina el país del primer autor combinando overrides, caché y consultas externas."""
     if not author:
         return "Desconocido", None, None
 
@@ -355,6 +360,7 @@ def resolve_country_info(
 
 
 def preprocess_text(text: str) -> List[str]:
+    """Normaliza, limpia y tokeniza texto combinando español/inglés para la nube de palabras."""
     normalized = text.lower()
     normalized = re.sub(r"[^a-záéíóúüñ\s]", " ", normalized)
     tokens = [token.strip() for token in normalized.split() if token.strip()]
@@ -373,6 +379,7 @@ def draw_geographical_heatmap(
     country_points: List[Dict[str, float]],
     unknown_total: int = 0,
 ) -> None:
+    """Genera la primera página del PDF con un mapa de calor basado en latitud/longitud promedio."""
     pdf.add_page()
     pdf.add_text(40, PAGE_HEIGHT - 40, "Mapa de calor geográfico por país (primer autor)", size=18)
     pdf.add_text(40, PAGE_HEIGHT - 60, "Estimación basada en nationalize.io + restcountries.com ", size=10, color=(0.3, 0.3, 0.3))
@@ -471,6 +478,7 @@ def draw_geographical_heatmap(
 
 
 def draw_word_cloud(pdf: SimplePDF, word_counter: Counter, max_words: int = 120) -> None:
+    """Construye la segunda página con una nube de palabras pseudoaleatoria escalada por frecuencia."""
     pdf.add_page()
     pdf.add_text(40, PAGE_HEIGHT - 40, "Nube de palabras", size=18)
     pdf.add_text(40, PAGE_HEIGHT - 60, "Frecuencia relativa en abstracts y keywords (dynamic)", size=10, color=(0.3, 0.3, 0.3))
@@ -505,6 +513,7 @@ def draw_publication_timeline(
     timeline_data: Dict[str, Dict[int, int]],
     top_n_journals: int = 5,
 ) -> None:
+    """Diseña la tercera página con una línea temporal por las revistas con más publicaciones."""
     pdf.add_page()
     pdf.add_text(40, PAGE_HEIGHT - 40, "Línea temporal de publicaciones por año y revista", size=18)
     pdf.add_text(40, PAGE_HEIGHT - 60, "Top revistas según volumen acumulado", size=10, color=(0.3, 0.3, 0.3))
@@ -621,6 +630,7 @@ def main() -> None:
     if args.max_articulos:
         articles = articles[: args.max_articulos]
 
+    # Cargamos overrides y cachés: permiten evitar llamadas repetidas a la red y aplicar correcciones manuales.
     overrides = {k.lower(): v for k, v in load_json(AUTHOR_OVERRIDE_PATH).items()}
     author_country_cache = load_json(AUTHOR_COUNTRY_CACHE_PATH)
     country_info_cache = load_json(COUNTRY_INFO_CACHE_PATH)
@@ -631,6 +641,7 @@ def main() -> None:
     word_counter: Counter = Counter()
     timeline: Dict[str, Dict[int, int]] = defaultdict(lambda: defaultdict(int))
 
+    # Recorremos cada artículo para alimentar las tres visualizaciones y el resumen.
     for article in articles:
         first_author = extract_first_author(article.get("author", ""))
         country_name, lat, lon = resolve_country_info(
@@ -652,6 +663,7 @@ def main() -> None:
 
         abstract_text = article.get("abstract", "")
         keywords_text = article.get("keywords", "")
+        # Unificamos abstract + keywords para que ambos campos aporten términos a la nube de palabras.
         tokens = preprocess_text(abstract_text + " " + keywords_text)
         word_counter.update(tokens)
 
@@ -663,6 +675,7 @@ def main() -> None:
             continue
         timeline[journal][year] += 1
 
+    # Persistimos caches actualizados (para futuras ejecuciones).
     save_json(AUTHOR_COUNTRY_CACHE_PATH, author_country_cache)
     save_json(COUNTRY_INFO_CACHE_PATH, country_info_cache)
 
@@ -682,6 +695,7 @@ def main() -> None:
     pdf = SimplePDF()
     unknown_total = country_counts.get("Desconocido", 0)
 
+    # Generamos las tres páginas del PDF en orden lógico: geografía → vocabulario → cronología.
     draw_geographical_heatmap(pdf, points_for_map, unknown_total)
     draw_word_cloud(pdf, word_counter)
     draw_publication_timeline(pdf, timeline)
@@ -689,6 +703,7 @@ def main() -> None:
     pdf_path = output_dir / "req5_visualizations.pdf"
     pdf.write(pdf_path)
 
+    # El resumen complementa las figuras con datos estructurados que pueden reutilizarse.
     summary = {
         "total_articulos": len(articles),
         "paises": country_counts,

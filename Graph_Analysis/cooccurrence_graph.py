@@ -24,14 +24,18 @@ from nltk.stem import PorterStemmer
 import nltk
 
 class CooccurrenceGraph:
-    """Clase para manejar el grafo de coocurrencia de términos."""
+    """Orquesta la creación y análisis de un grafo de coocurrencia de términos derivados de BibTeX."""
     
     def __init__(self, min_frequency: int = 2, min_cooccurrence: int = 1):
-        """Inicializar el grafo de coocurrencia."""
+        """Inicializa las estructuras básicas y los recursos lingüísticos necesarios."""
+        # Grafo no dirigido donde cada nodo es un término y cada arista representa coocurrencia.
         self.graph = nx.Graph()
-        self.term_frequencies = Counter()
-        self.cooccurrence_matrix = defaultdict(int)
-        self.articles = {}
+        # Conteo global de cuántos documentos contiene cada término (tras stem y stopwords).
+        self.term_frequencies: Counter[str] = Counter()
+        # Matriz dispersa que acumula coocurrencias término-término (clave = par ordenado).
+        self.cooccurrence_matrix: Dict[Tuple[str, str], int] = defaultdict(int)
+        # Copia de los artículos cargados para reutilizar en distintas fases.
+        self.articles: Dict[str, Dict[str, str]] = {}
         self.min_frequency = min_frequency
         self.min_cooccurrence = min_cooccurrence
         self.stemmer = PorterStemmer()
@@ -93,7 +97,7 @@ class CooccurrenceGraph:
         return articles
     
     def _preprocess_text(self, text: str) -> List[str]:
-        """Preprocesar texto para extraer términos."""
+        """Normaliza, tokeniza y filtra un texto para obtener términos comparables."""
         if not text:
             return []
         
@@ -134,7 +138,7 @@ class CooccurrenceGraph:
         return terms
     
     def build_cooccurrence_matrix(self):
-        """Construir matriz de coocurrencia de términos."""
+        """Llena la matriz de coocurrencia con base en los términos presentes en los artículos."""
         print("🔗 Construyendo matriz de coocurrencia...")
         
         # Primero, extraer todos los términos y contar frecuencias
@@ -172,7 +176,7 @@ class CooccurrenceGraph:
         return len(filtered_terms)
     
     def build_cooccurrence_graph(self):
-        """Construir el grafo de coocurrencia."""
+        """Proyecta la matriz de coocurrencia sobre un grafo no dirigido con pesos normalizados."""
         print("🕸️ Construyendo grafo de coocurrencia...")
         
         # Limpiar grafo existente
@@ -214,7 +218,7 @@ class CooccurrenceGraph:
         return sorted_degrees[:top_n]
     
     def find_connected_components(self) -> List[List[str]]:
-        """Encontrar componentes conexas del grafo."""
+        """Lista las agrupaciones de términos donde cada par está conectado mediante coocurrencias."""
         print("🔍 Buscando componentes conexas...")
         
         try:
@@ -265,7 +269,7 @@ class CooccurrenceGraph:
         return themes
     
     def calculate_centrality_measures(self) -> Dict[str, Dict]:
-        """Calcular medidas de centralidad."""
+        """Obtiene diferentes métricas de centralidad para analizar la importancia de los términos."""
         print("📊 Calculando medidas de centralidad...")
         
         try:
@@ -305,7 +309,7 @@ class CooccurrenceGraph:
             return {}
     
     def get_graph_statistics(self) -> Dict:
-        """Obtener estadísticas del grafo."""
+        """Calcula estadísticas globales del grafo para apoyar reportes y diagnósticos."""
         stats = {
             'nodes': self.graph.number_of_nodes(),
             'edges': self.graph.number_of_edges(),
@@ -323,7 +327,7 @@ class CooccurrenceGraph:
         return stats
     
     def save_graph(self, filename: str):
-        """Guardar el grafo en formato JSON."""
+        """Serializa el grafo, frecuencias y matriz de coocurrencia para reproducir el análisis."""
         graph_data = {
             'nodes': list(self.graph.nodes(data=True)),
             'edges': list(self.graph.edges(data=True)),
@@ -338,7 +342,7 @@ class CooccurrenceGraph:
         print(f"💾 Grafo guardado en {filename}")
     
     def load_graph(self, filename: str):
-        """Cargar grafo desde archivo JSON."""
+        """Reconstruye el grafo y sus estructuras auxiliares desde un JSON previamente guardado."""
         with open(filename, 'r', encoding='utf-8') as f:
             graph_data = json.load(f)
         

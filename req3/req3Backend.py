@@ -116,6 +116,7 @@ def limpiar_texto(texto):
 
 
 def _tokenizar(texto: str) -> list[str]:
+    """Tokeniza un texto en palabras significativas, filtrando stopwords y términos cortos."""
     return [
         token for token in limpiar_texto(texto).split()
         if token and token not in STOPWORDS_EN and len(token) > 2
@@ -125,6 +126,7 @@ def _tokenizar(texto: str) -> list[str]:
 def _tfidf_promedio(token_lists: list[list[str]]) -> dict[str, float]:
     """
     Calcula un score promedio TF-IDF para cada término dado un corpus tokenizado.
+    Se promedia por documento para favorecer términos que aparecen consistentemente en múltiples abstracts.
     """
     if not token_lists:
         return {}
@@ -309,4 +311,5 @@ def medir_precision(nuevas_palabras):
             validas += 1
 
     # Precisión = palabras válidas / total de palabras nuevas
+    # Esta métrica es heurística: asume que nuevas palabras deberían incluir términos ligados a IA/educación.
     return validas / len(nuevas_palabras)

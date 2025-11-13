@@ -2,22 +2,22 @@
   "metric": "cosine",
   "results": {
     "single": {
-      "cophenetic": 0.7688195469515064,
+      "cophenetic": 0.9312925571255967,
       "visualization": "Data/visualizations/req4\\dendrogram_single.html",
       "method_label": "Enlace sencillo"
     },
     "complete": {
-      "cophenetic": 0.7703679951863331,
+      "cophenetic": 0.8987303087965516,
       "visualization": "Data/visualizations/req4\\dendrogram_complete.html",
       "method_label": "Enlace completo"
     },
     "average": {
-      "cophenetic": 0.842881263013114,
+      "cophenetic": 0.9345371624078935,
       "visualization": "Data/visualizations/req4\\dendrogram_average.html",
       "method_label": "Enlace promedio"
     }
   },
   "best_method": "average",
   "best_method_label": "Enlace promedio",
-  "best_coherence": 0.842881263013114
+  "best_coherence": 0.9345371624078935
 }

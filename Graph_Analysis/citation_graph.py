@@ -20,16 +20,19 @@ import json
 import os
 
 class CitationGraph:
-    """Clase para manejar el grafo de citaciones."""
+    """Gestor del grafo dirigido de citaciones construido a partir de artículos BibTeX."""
     
     def __init__(self):
-        """Inicializar el grafo de citaciones."""
+        """Inicializa estructuras vacías para el análisis de citaciones."""
+        # Grafo dirigido donde los nodos son IDs de artículos y las aristas representan citaciones inferidas.
         self.graph = nx.DiGraph()
-        self.articles = {}
-        self.similarity_threshold = 0.3  # Umbral de similitud para considerar citación
+        # Diccionario crudo con los metadatos del artículo (tal como se extrajeron del BibTeX).
+        self.articles: Dict[str, Dict[str, str]] = {}
+        # Umbral mínimo de similitud para declarar una citación: combina título, autores y abstract.
+        self.similarity_threshold = 0.18
         
     def load_articles_from_bibtex(self, bibtex_file: str):
-        """Cargar artículos desde archivo BibTeX."""
+        """Carga artículos desde un BibTeX y los incorpora como nodos del grafo."""
         print(f"📖 Cargando artículos desde {bibtex_file}...")
         
         with open(bibtex_file, 'r', encoding='utf-8') as f:
@@ -41,13 +44,14 @@ class CitationGraph:
         for article in articles:
             article_id = article.get('id', f"ref{len(self.articles)}")
             self.articles[article_id] = article
+            # Añadimos cada artículo como nodo con todos sus atributos originales para usarlos en análisis posteriores.
             self.graph.add_node(article_id, **article)
         
         print(f"✅ Cargados {len(self.articles)} artículos")
         return len(self.articles)
     
     def _parse_bibtex(self, content: str) -> List[Dict]:
-        """Parsear contenido BibTeX."""
+        """Convierte el texto del BibTeX en una lista de diccionarios de atributos."""
         articles = []
         current_article = {}
         in_article = False
@@ -74,7 +78,7 @@ class CitationGraph:
         return articles
     
     def _calculate_text_similarity(self, text1: str, text2: str) -> float:
-        """Calcular similitud entre dos textos usando Jaccard."""
+        """Mide cuán similares son dos textos usando la métrica de Jaccard sobre conjuntos de palabras."""
         if not text1 or not text2:
             return 0.0
         
@@ -96,7 +100,7 @@ class CitationGraph:
         return intersection / union if union > 0 else 0.0
     
     def _calculate_author_similarity(self, authors1: str, authors2: str) -> float:
-        """Calcular similitud entre listas de autores."""
+        """Calcula la proporción de autores compartidos entre dos listas normalizadas."""
         if not authors1 or not authors2:
             return 0.0
         
@@ -117,7 +121,7 @@ class CitationGraph:
         return intersection / union if union > 0 else 0.0
     
     def build_citation_graph(self):
-        """Construir el grafo de citaciones basado en similitud."""
+        """Construye todas las aristas inferidas según la similitud entre pares de artículos."""
         print("🔗 Construyendo grafo de citaciones...")
         
         article_ids = list(self.articles.keys())
@@ -135,7 +139,7 @@ class CitationGraph:
                 
                 article2 = self.articles[article2_id]
                 
-                # Calcular similitudes
+                # Calculamos la similitud de cada campo relevante de forma independiente.
                 title_sim = self._calculate_text_similarity(
                     article1.get('title', ''), 
                     article2.get('title', '')
@@ -151,37 +155,49 @@ class CitationGraph:
                     article2.get('abstract', '')
                 )
                 
-                # Peso combinado (título tiene más peso)
+                # Combinamos las similitudes dando más peso al título (0.5), seguido de autores y abstract.
                 combined_similarity = (
                     0.5 * title_sim + 
                     0.3 * author_sim + 
                     0.2 * abstract_sim
                 )
                 
-                # Si la similitud supera el umbral, crear arista
-                if combined_similarity > self.similarity_threshold:
+                # Solo inferimos citación si el valor combinado supera el umbral configurado.
+                if combined_similarity >= self.similarity_threshold:
                     # Determinar dirección basada en año (artículo más reciente cita al más antiguo)
                     year1 = int(article1.get('year', '0')) if article1.get('year', '0').isdigit() else 0
                     year2 = int(article2.get('year', '0')) if article2.get('year', '0').isdigit() else 0
                     
                     if year1 > year2:
-                        # article1 cita a article2
+                        # article1 es más reciente: agregamos arista desde artículo1 hacia artículo2.
                         self.graph.add_edge(article1_id, article2_id, 
                                          weight=combined_similarity,
                                          similarity=combined_similarity)
                         edges_added += 1
                     elif year2 > year1:
-                        # article2 cita a article1
+                        # article2 es más reciente: invertimos la dirección.
                         self.graph.add_edge(article2_id, article1_id, 
                                          weight=combined_similarity,
                                          similarity=combined_similarity)
                         edges_added += 1
+                    else:
+                        # Años idénticos o desconocidos: ordenamos alfabéticamente para asegurar determinismo.
+                        source, target = sorted((article1_id, article2_id))
+                        if not self.graph.has_edge(source, target):
+                            self.graph.add_edge(
+                                source,
+                                target,
+                                weight=combined_similarity,
+                                similarity=combined_similarity,
+                                inferred_year=True,
+                            )
+                            edges_added += 1
         
         print(f"✅ Grafo construido con {self.graph.number_of_nodes()} nodos y {edges_added} aristas")
         return edges_added
     
     def dijkstra_shortest_path(self, source: str, target: str) -> Tuple[List, float]:
-        """Calcular camino mínimo usando algoritmo de Dijkstra."""
+        """Calcula la ruta de menor peso entre dos nodos usando Dijkstra (respecto a la similitud inversa)."""
         try:
             path = nx.shortest_path(self.graph, source, target, weight='weight')
             distance = nx.shortest_path_length(self.graph, source, target, weight='weight')
@@ -192,7 +208,7 @@ class CitationGraph:
             return [], float('inf')
     
     def floyd_warshall_all_pairs(self) -> Dict[Tuple[str, str], Tuple[List, float]]:
-        """Calcular todos los caminos mínimos usando Floyd-Warshall."""
+        """Obtiene caminos mínimos para todos los pares usando la implementación de NetworkX de Floyd-Warshall."""
         print("🔄 Calculando todos los caminos mínimos (Floyd-Warshall)...")
         
         # Usar NetworkX para Floyd-Warshall
@@ -215,7 +231,7 @@ class CitationGraph:
             return {}
     
     def find_strongly_connected_components(self) -> List[List[str]]:
-        """Encontrar componentes fuertemente conexas."""
+        """Identifica conjuntos de artículos donde cada uno alcanza a los demás en el grafo dirigido."""
         print("🔍 Buscando componentes fuertemente conexas...")
         
         try:
@@ -231,7 +247,7 @@ class CitationGraph:
             return []
     
     def get_graph_statistics(self) -> Dict:
-        """Obtener estadísticas del grafo."""
+        """Devuelve métricas agregadas del grafo actual para interpretar su estructura."""
         stats = {
             'nodes': self.graph.number_of_nodes(),
             'edges': self.graph.number_of_edges(),
@@ -260,7 +276,7 @@ class CitationGraph:
         return stats
     
     def save_graph(self, filename: str):
-        """Guardar el grafo en formato JSON."""
+        """Serializa el grafo y métricas derivadas en un JSON reutilizable."""
         graph_data = {
             'nodes': list(self.graph.nodes(data=True)),
             'edges': list(self.graph.edges(data=True)),
@@ -273,7 +289,7 @@ class CitationGraph:
         print(f"💾 Grafo guardado en {filename}")
     
     def load_graph(self, filename: str):
-        """Cargar grafo desde archivo JSON."""
+        """Reconstruye el grafo a partir de un JSON previamente generado."""
         with open(filename, 'r', encoding='utf-8') as f:
             graph_data = json.load(f)
         

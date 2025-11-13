@@ -25,6 +25,7 @@ from req2.req2Backend import (
 
 
 def mostrar_articulos(articulos):
+    """Imprime un listado con índice, título y autor para facilitar la selección."""
     print("\n===== LISTA DE ARTÍCULOS =====")
     for i, art in enumerate(articulos):
         titulo = art.get("title", "Título desconocido")
@@ -34,6 +35,7 @@ def mostrar_articulos(articulos):
 
 
 def seleccionar_indices(articulos):
+    """Solicita al usuario los índices a comparar y valida que existan al menos dos."""
     while True:
         raw = input(
             "Ingresa los índices de dos o más artículos separados por coma (ej. 0,3,5): "
@@ -59,6 +61,7 @@ def seleccionar_indices(articulos):
 
 
 def imprimir_resultados(titulo1, titulo2, resultados):
+    """Muestra en consola los resultados completos para cada pareja de artículos seleccionada."""
     print("===== RESULTADOS =====")
     print(f"Título 1: {titulo1}")
     print(f"Título 2: {titulo2}\n")
@@ -79,6 +82,7 @@ def imprimir_resultados(titulo1, titulo2, resultados):
 
 
 def iniciar_menu():
+    """Flujo principal de la CLI: carga artículos, permite seleccionar y comparar."""
     print("\n=== ANÁLISIS DE SIMILITUD TEXTUAL ===\n")
 
     ruta = input("Ingrese la ruta del archivo .bib (ej: Data/unificados.bib): ").strip()

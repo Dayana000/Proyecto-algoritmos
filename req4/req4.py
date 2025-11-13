@@ -150,14 +150,20 @@ def load_articles_from_bibtex(path: str, max_items: int | None = None) -> List[A
     current_id = ""
     inside = False
 
+    # Recorremos el texto completo, detectando el inicio y cierre de cada bloque @article.
+    # Cada bloque se traduce en un diccionario con las claves del BibTeX tal como aparecen.
+    # Solo convertimos a Article aquellos registros que poseen título y abstract, porque el resto
+    # no aporta información útil al clustering.
     for line in content.splitlines():
         stripped = line.strip()
         if stripped.startswith("@article"):
+            # Nuevo artículo: reiniciamos el estado y capturamos el identificador.
             inside = True
             current = {}
             current_id = stripped.split("{", 1)[1].split(",", 1)[0].strip()
         elif inside and stripped == "}":
             if current:
+                # Validamos que existan título y abstract antes de materializar el objeto Article.
                 abstract = current.get("abstract", "").strip()
                 title = current.get("title", "").strip()
                 if abstract and title:
@@ -168,10 +174,12 @@ def load_articles_from_bibtex(path: str, max_items: int | None = None) -> List[A
                         year=current.get("year", "Unknown"),
                     )
                     articles.append(article)
+                    # Si el usuario estableció un límite, salimos tan pronto como lo alcanzamos.
                     if max_items and len(articles) >= max_items:
                         break
             inside = False
         elif inside and "=" in stripped:
+            # Dentro de un bloque copiamos pares clave=valor limpiando comas y llaves.
             key, value = stripped.split("=", 1)
             key = key.strip()
             value = value.strip().rstrip(",")
@@ -188,7 +196,11 @@ def load_articles_from_bibtex(path: str, max_items: int | None = None) -> List[A
 def preprocess_text(text: str) -> List[str]:
     """Convierte el abstract en tokens filtrados."""
 
+    # Extraemos solo secuencias alfabéticas de al menos 3 caracteres y las normalizamos.
+    # Este paso unifica criterios: todo en minúscula y sin símbolos para que TF-IDF trate cada término de forma consistente.
     tokens = re.findall(r"[a-zA-Z]{3,}", text.lower())
+    # Eliminamos palabras vacías para concentrarnos en términos relevantes del dominio.
+    # Las stopwords (the, and, etc.) no aportan significado para medir similitud entre abstracts.
     filtered = [token for token in tokens if token not in STOPWORDS]
     return filtered
 
@@ -196,18 +208,23 @@ def preprocess_text(text: str) -> List[str]:
 def compute_tfidf_vectors(articles: Sequence[Article]) -> List[Dict[str, float]]:
     """Calcula representaciones TF-IDF sencillas por documento."""
 
+    # Preprocesamos cada abstract para obtener su lista de tokens limpia.
+    # El resultado de este paso son listas de palabras con stopwords removidas y en minúscula.
     documents = [preprocess_text(article.abstract) for article in articles]
     doc_count = len(documents)
     if doc_count == 0:
         return []
 
-    # Frecuencia de documentos
+    # Calculamos la frecuencia de documentos (DF) por término para el IDF.
+    # La estructura df almacena cuántos abstracts contienen cada token en al menos una ocasión.
     df: Dict[str, int] = {}
     for tokens in documents:
         unique_terms = set(tokens)
         for term in unique_terms:
             df[term] = df.get(term, 0) + 1
 
+    # Construimos un vector TF-IDF disperso para cada documento.
+    # Cada vector es un diccionario {término: peso}; esto evita almacenar ceros explícitos.
     tfidf_vectors: List[Dict[str, float]] = []
     for tokens in documents:
         term_counts: Dict[str, int] = {}
@@ -217,7 +234,9 @@ def compute_tfidf_vectors(articles: Sequence[Article]) -> List[Dict[str, float]]
         vector: Dict[str, float] = {}
         total_terms = len(tokens) or 1
         for term, count in term_counts.items():
+            # tf captura qué tan frecuente es el término en este documento.
             tf = count / total_terms
+            # idf atenúa términos ubicuos entre documentos y refuerza los raros.
             idf = math.log((doc_count + 1) / (df.get(term, 0) + 1)) + 1.0
             vector[term] = tf * idf
         tfidf_vectors.append(vector)
@@ -232,25 +251,30 @@ def compute_tfidf_vectors(articles: Sequence[Article]) -> List[Dict[str, float]]
 def cosine_distance(vec_a: Dict[str, float], vec_b: Dict[str, float]) -> float:
     """Distancia coseno entre dos vectores representados como diccionarios."""
 
+    # Si alguno de los vectores es vacío, asumimos distancia máxima (no hay información compartida).
     if not vec_a or not vec_b:
         return 1.0
 
+    # Producto punto considerando únicamente las dimensiones compartidas.
     dot = sum(value * vec_b.get(term, 0.0) for term, value in vec_a.items())
     norm_a = math.sqrt(sum(value * value for value in vec_a.values()))
     norm_b = math.sqrt(sum(value * value for value in vec_b.values()))
+    # Ante normas nulas devolvemos distancia máxima para mantener el algoritmo estable.
     if norm_a == 0.0 or norm_b == 0.0:
         return 1.0
 
+    # Clamp para evitar errores de redondeo flotante.
     similarity = max(min(dot / (norm_a * norm_b), 1.0), -1.0)
     return 1.0 - similarity
 
 
 def pairwise_distances(vectors: Sequence[Dict[str, float]]) -> Dict[Tuple[int, int], float]:
-    """Calcula las distancias coseno entre todos los pares de documentos."""
+    """Construye una matriz dispersa de distancias coseno entre todos los pares de documentos."""
 
     distances: Dict[Tuple[int, int], float] = {}
     for i in range(len(vectors)):
         for j in range(i + 1, len(vectors)):
+            # Guardamos solo (i, j) con i < j para evitar duplicados y ahorrar memoria.
             distances[(i, j)] = cosine_distance(vectors[i], vectors[j])
     return distances
 
@@ -261,7 +285,7 @@ def cluster_distance(
     base_distances: Dict[Tuple[int, int], float],
     method: str,
 ) -> float:
-    """Calcula la distancia entre dos clusters según el método especificado."""
+    """Calcula la distancia entre dos clústeres acorde al esquema de enlace solicitado."""
 
     values: List[float] = []
     for i in members_a:
@@ -271,15 +295,21 @@ def cluster_distance(
             key = (i, j) if i < j else (j, i)
             values.append(base_distances.get(key, 1.0))
 
+    # Si no hay pares (p.ej. clústeres vacíos), devolvemos distancia máxima.
+    # Este caso puede ocurrir si ambos clústeres apuntan al mismo índice (situación degenerada).
     if not values:
         return 1.0
-
     if method == "single":
+        # Enlace sencillo: se queda con el par más cercano entre los clústeres.
+        # Favorece unir clústeres que tengan al menos un documento muy parecido (sensibilidad alta).
         return min(values)
     if method == "complete":
+        # Enlace completo: exige que incluso el par más distante sea aceptable.
+        # Útil cuando se desea evitar que un clúster contenga elementos demasiado dispares.
         return max(values)
 
-    # Enlace promedio
+    # Enlace promedio: evalúa la distancia media entre todos los pares.
+    # Balance intermedio: suaviza extremos y tiende a formar clústeres cohesionados sin ser estrictos.
     return sum(values) / len(values)
 
 
@@ -288,19 +318,17 @@ def hierarchical_clustering(
     n_obs: int,
     method: str,
 ) -> Tuple[List[ClusterNode], int]:
-    """
-    Ejecuta clustering jerárquico aglomerativo.
-
-    Devuelve la lista de nodos y el ID del nodo raíz final.
-    """
+    """Ejecuta clustering jerárquico aglomerativo."""
 
     if n_obs < 2:
         raise ValueError("Se requieren al menos dos observaciones para el clustering.")
 
+    # Inicializamos cada observación como clúster hoja independiente.
     clusters: Dict[int, ClusterNode] = {
         idx: ClusterNode(id=idx, members=(idx,), left=None, right=None, distance=0.0)
         for idx in range(n_obs)
     }
+    # Convertimos la matriz de distancias en un diccionario de accesos rápidos.
     distances: Dict[frozenset[int], float] = {
         frozenset((i, j)): dist for (i, j), dist in base_distances.items()
     }
@@ -308,7 +336,9 @@ def hierarchical_clustering(
     next_id = n_obs
     history: List[ClusterNode] = []
 
+    # Fusionamos clústeres hasta que quede una única raíz.
     while len(clusters) > 1:
+        # Escogemos el par con la distancia más baja de las que tenemos almacenadas.
         pair, pair_distance = min(distances.items(), key=lambda item: item[1])
         ids = tuple(pair)
         if len(ids) != 2:
@@ -318,6 +348,7 @@ def hierarchical_clustering(
         cluster_a = clusters[a_id]
         cluster_b = clusters[b_id]
 
+        # Creamos un nodo interno que representa la fusión de los dos clústeres más próximos.
         new_members = cluster_a.members + cluster_b.members
         new_cluster = ClusterNode(
             id=next_id,
@@ -328,6 +359,7 @@ def hierarchical_clustering(
         )
         history.append(new_cluster)
 
+        # Eliminamos los clústeres fusionados y preparamos el diccionario de distancias actualizado.
         del clusters[a_id]
         del clusters[b_id]
         new_distances: Dict[frozenset[int], float] = {}
@@ -339,6 +371,7 @@ def hierarchical_clustering(
 
         clusters[new_cluster.id] = new_cluster
 
+        # Recalculamos las distancias entre el clúster recién creado y todos los restantes.
         for other_id, other_cluster in clusters.items():
             if other_id == new_cluster.id:
                 continue
@@ -352,7 +385,7 @@ def hierarchical_clustering(
 
     final_root = history[-1].id if history else next_id - 1
 
-    # Añadir nodos hoja si no quedaron en la historia
+    # Garantizamos que los nodos hoja también estén presentes en el historial.
     for idx in range(n_obs):
         if not any(node.id == idx for node in history):
             history.append(
@@ -367,15 +400,19 @@ def hierarchical_clustering(
 # Métricas y visualización
 # ---------------------------------------------------------------------------
 
+"""Calcula un coeficiente cophenético aproximado a partir del historial de merges (es la correlacion de pearson entre la distancia original y la distancia cophenética)."""
 def compute_cophenetic_coefficient(
     history: Sequence[ClusterNode],
     base_distances: Dict[Tuple[int, int], float],
 ) -> float:
     """Calcula un coeficiente cophenético aproximado a partir del historial de merges."""
 
+    # El coeficiente mide la correlación entre distancias originales y alturas del dendrograma.
     nodes = {node.id: node for node in history}
     n_obs = sum(1 for node in history if node.left is None and node.right is None)
 
+    # Construimos la matriz cophenética: para cada par, registramos la altura del nodo donde se unen.
+    # Esto refleja "en qué nivel" del dendrograma aparecen juntos dos artículos y permite compararlo con la distancia original.
     cophenetic: Dict[Tuple[int, int], float] = {}
     for node in history:
         if node.left is None or node.right is None:
@@ -388,6 +425,7 @@ def compute_cophenetic_coefficient(
                 if key not in cophenetic:
                     cophenetic[key] = node.distance
 
+    # Creamos listas paralelas con las distancias originales y las cophenéticas para correlacionarlas.
     original: List[float] = []
     coph: List[float] = []
     for i in range(n_obs):
@@ -429,6 +467,7 @@ def layout_positions(
     available_width = max(width - 2 * margin_x, 100)
     available_height = max(height - 2 * margin_y, 100)
 
+    # Espaciamos las hojas equitativamente a lo largo del eje X.
     leaf_spacing = available_width / max(len(leaves), 1)
     positions: Dict[int, Tuple[float, float]] = {}
 
@@ -437,6 +476,7 @@ def layout_positions(
         y = height - margin_y
         positions[leaf.id] = (x, y)
 
+    # Usamos la distancia máxima para escalar la altura de los nodos internos.
     max_distance = max((node.distance for node in history), default=1.0) or 1.0
 
     def set_position(node_id: int) -> Tuple[float, float]:
@@ -450,6 +490,7 @@ def layout_positions(
         left_pos = set_position(node.left)
         right_pos = set_position(node.right)
 
+        # Los nodos internos se ubican en el punto medio horizontal de sus hijos y a una altura proporcional a la distancia.
         x = (left_pos[0] + right_pos[0]) / 2
         y = height - margin_y - (node.distance / max_distance) * available_height
         positions[node_id] = (x, y)
@@ -484,6 +525,7 @@ def write_dendrogram_svg(
     lines: List[str] = []
     texts: List[str] = []
 
+    # Dibujamos las ramas verticales y horizontales de cada fusión.
     for node in history:
         if node.left is None or node.right is None:
             continue
@@ -504,6 +546,7 @@ def write_dendrogram_svg(
             f'x2="{x_right:.2f}" y2="{y_parent:.2f}" stroke="#222" stroke-width="2"/>'
         )
 
+    # Añadimos etiquetas rotadas para evitar solapamientos y mejorar la legibilidad.
     for idx, label in enumerate(labels):
         if idx not in positions:
             continue
@@ -539,7 +582,7 @@ def write_dendrogram_svg(
 <html lang="es">
 <head>
   <meta charset="utf-8"/>
-  <title>Dendrograma</title>
+  <title>Dendrograma </title>
   <style>
     body {{ font-family: Arial, sans-serif; background: #fafafa; margin: 0; }}
     .container {{
@@ -614,6 +657,7 @@ def run_clustering_pipeline(
     if metric != "cosine":
         raise ValueError("Esta implementación simplificada solo soporta la métrica 'cosine'.")
 
+    # 1) Cargamos los artículos y validamos que haya suficientes abstracts.
     articles = load_articles_from_bibtex(bibtex_path, max_articles)
     if len(articles) < 2:
         raise ValueError(
@@ -621,9 +665,12 @@ def run_clustering_pipeline(
         )
 
     print(f"📚 Artículos cargados para clustering: {len(articles)}")
+
+    # 2) Generamos los vectores TF-IDF y la matriz de distancias coseno.
     vectors = compute_tfidf_vectors(articles)
     base_dist = pairwise_distances(vectors)
 
+    # 3) Creamos etiquetas amigables para las visualizaciones.
     labels = [
         f"Artículo {idx + 1} – {art.title[:55]}"
         for idx, art in enumerate(articles)
@@ -631,6 +678,7 @@ def run_clustering_pipeline(
     methods = ("single", "complete", "average")
     results: Dict[str, Dict[str, float | str]] = {}
 
+    # 4) Ejecutamos el clustering para cada método de enlace y guardamos datos intermedios.
     intermediate: Dict[str, Dict[str, object]] = {}
     for method in methods:
         print(f"🧪 Ejecutando clustering jerárquico ({method})…")
@@ -642,11 +690,13 @@ def run_clustering_pipeline(
             "coherence": coherence,
         }
 
+    # 5) Determinamos el método con mayor coherencia (mejor ajuste del dendrograma).
     best_method = max(
         intermediate.items(), key=lambda item: item[1]["coherence"]
     )[0]
     best_coherence = float(intermediate[best_method]["coherence"])
 
+    # 6) Generamos visualizaciones HTML y consolidamos el reporte final para cada método.
     for method in methods:
         data = intermediate[method]
         coherence = float(data["coherence"])
@@ -673,6 +723,7 @@ def run_clustering_pipeline(
 
     print(f"✅ Método con mayor coherencia (aprox.): {best_method}")
 
+    # 7) Persistimos un resumen JSON para facilitar el análisis posterior.
     os.makedirs(output_dir, exist_ok=True)
     summary_path = os.path.join(output_dir, "req4_summary.json")
     with open(summary_path, "w", encoding="utf-8") as f_summary:

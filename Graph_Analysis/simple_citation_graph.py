@@ -14,17 +14,20 @@ from collections import defaultdict, deque
 from typing import Dict, List, Tuple, Set, Optional
 
 class SimpleCitationGraph:
-    """Clase simplificada para manejar el grafo de citaciones."""
+    """Implementación ligera del grafo de citaciones sin dependencias externas."""
     
     def __init__(self):
-        """Inicializar el grafo de citaciones."""
-        self.graph = defaultdict(list)  # Lista de adyacencia
-        self.weights = defaultdict(dict)  # Pesos de las aristas
-        self.articles = {}
+        """Inicializa listas de adyacencia y parámetros base."""
+        # Representamos el grafo como diccionario -> lista de vecinos para evitar usar networkx.
+        self.graph: Dict[str, List[str]] = defaultdict(list)
+        # Guardamos por separado el peso asociado a cada arista dirigida (similitud combinada).
+        self.weights: Dict[str, Dict[str, float]] = defaultdict(dict)
+        self.articles: Dict[str, Dict[str, str]] = {}
+        # Umbral de similitud mínimo: ligeramente más alto porque aquí no hay normalizaciones extra.
         self.similarity_threshold = 0.3
         
     def load_articles_from_bibtex(self, bibtex_file: str):
-        """Cargar artículos desde archivo BibTeX."""
+        """Carga artículos desde un BibTeX y los conserva en memoria para posteriores cálculos."""
         print(f"📖 Cargando artículos desde {bibtex_file}...")
         
         with open(bibtex_file, 'r', encoding='utf-8') as f:
@@ -109,7 +112,7 @@ class SimpleCitationGraph:
         return intersection / union if union > 0 else 0.0
     
     def build_citation_graph(self):
-        """Construir el grafo de citaciones basado en similitud."""
+        """Construye el grafo dirigido comparando todos los pares con heurísticas básicas."""
         print("🔗 Construyendo grafo de citaciones...")
         
         article_ids = list(self.articles.keys())
@@ -170,7 +173,7 @@ class SimpleCitationGraph:
         return edges_added
     
     def dijkstra_shortest_path(self, source: str, target: str) -> Tuple[List, float]:
-        """Calcular camino mínimo usando algoritmo de Dijkstra."""
+        """Implementación manual de Dijkstra sobre las estructuras listas de adyacencia."""
         if source not in self.articles or target not in self.articles:
             return [], float('inf')
         

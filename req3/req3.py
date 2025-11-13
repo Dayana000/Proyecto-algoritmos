@@ -16,6 +16,7 @@ from req3 import req3Backend as backend
 
 
 def iniciar_menu():
+    """Flujo interactivo: carga el BibTeX, procesa frecuencias y muestra resultados."""
     print("\n=== FRECUENCIA DE CONCEPTOS EN ABSTRACTS ===\n")
 
     ruta = input("Ingrese la ruta del archivo .bib (ej: Data/unificados.bib): ").strip()

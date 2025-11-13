@@ -19,9 +19,9 @@ Este proyecto permite descargar artículos académicos de tres bases de datos pr
 
 ## 📋 Requisitos
 
-- Python 3.7+
-- Navegador web (Chrome/Chromium)
-- Credenciales de acceso a las bases de datos
+- Python 3.10 o 3.11 (recomendado; probado en 3.13 con las versiones actuales)
+- Navegador web (Chrome/Chromium) para Playwright
+- Credenciales institucionales para las bases de datos (opcional según el alcance)
 
 ## 🛠️ Instalación
 
@@ -31,7 +31,28 @@ Este proyecto permite descargar artículos académicos de tres bases de datos pr
    cd Proyecto-algoritmos
    ```
 
-2. **Instalar dependencias:**
+2. **Configurar entorno automáticamente (recomendado):**
+   ```powershell
+   Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+   .\scripts\setup_windows.ps1
+   ```
+
+   o bien en Linux/macOS:
+   ```bash
+   chmod +x scripts/setup_unix.sh
+   scripts/setup_unix.sh
+   ```
+
+3. **Instalación manual (alternativa):**
+
+   - Crear el entorno virtual:
+     ```bash
+     py -3.11 -m venv .venv
+     .\.venv\Scripts\activate  # Windows
+     source .venv/bin/activate # Linux / macOS
+     ```
+
+   - Instalar dependencias:
    ```bash
    pip install -r requirements.txt
    ```
@@ -41,7 +62,7 @@ Este proyecto permite descargar artículos académicos de tres bases de datos pr
    playwright install
    ```
 
-4. **Configurar credenciales:**
+4. **Configurar credenciales (si se ejecutarán los scrapers):**
    ```bash
    cp env.template .env
    ```
@@ -55,9 +76,21 @@ Este proyecto permite descargar artículos académicos de tres bases de datos pr
 ## 🎯 Uso
 
 ### Ejecución completa
-```bash
-python main.py
-```
+
+- Windows:
+  ```powershell
+  scripts\run_main_windows.bat
+  ```
+
+- Linux / macOS:
+  ```bash
+  scripts/run_main_unix.sh
+  ```
+
+- Manual:
+  ```bash
+  python main.py
+  ```
 
 ### Ejecución individual de scrapers
 ```bash
@@ -105,11 +138,23 @@ python req5/generate_visualizations.py --entrada Data/unificados.bib --salida Da
 # Crea PNG y un PDF con mapa geográfico, nube de palabras y línea temporal
 
 ### Menú interactivo
-```bash
-python menu_requerimientos.py
-```
+
+- Windows:
+  ```powershell
+  scripts\run_menu_windows.bat
+  ```
+
+- Linux / macOS:
+  ```bash
+  scripts/run_menu_unix.sh
+  ```
+
+- Manual:
+  ```bash
+  python menu_requerimientos.py
+  ```
+
 - Permite ejecutar los requerimientos 2, 3, 4 o 5 y, opcionalmente, limitar la cantidad de artículos a procesar en los dos últimos.
-```
 
 ## 📁 Estructura del Proyecto
 
@@ -192,6 +237,20 @@ Para habilitar los dos algoritmos de IA (Req. 2) se recomienda instalar `sentenc
 ### Términos de Búsqueda
 
 Los scrapers buscan artículos relacionados con "generative artificial intelligence". Para cambiar el término de búsqueda, edita la variable correspondiente en cada script de scraping.
+
+## 📦 Despliegue y entrega
+
+Para preparar el proyecto como producto académico listo para entrega o sustentación:
+
+- Sigue la guía `docs/Guia_Despliegue.md` para automatizar la instalación, ejecución y verificación del entorno.
+- Puedes empaquetar el proyecto (código + `Data/` generados + documentación) en un archivo `.zip` para compartirlo.
+- `verificar_instalacion.py` ayuda a confirmar que el entorno está listo antes de presentar.
+- Si necesitas desplegar en la nube temporalmente (Railway, Render, ACI, Cloud Run Jobs), construye la imagen Docker incluida:
+  ```bash
+  docker build -t proyecto-algoritmos:demo .
+  docker run --rm -it proyecto-algoritmos:demo
+  ```
+  Al ejecutar se abrirá el menú de requerimientos; puedes mapear un volumen `Data/` para exportar resultados.
 
 ## 🔧 Solución de Problemas
 
